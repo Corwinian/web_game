@@ -55,7 +55,7 @@ def login_user(userName):
         if (userInDb = data_Base.query(User).filter_by(name = user.name).one().password != password) 
            raise BadNameOrPassword("Wrong password")
         user = User(user, password)
-		sid = user.create_sid()
+		return responded_ok({"sid": user.create_sid()})
     except sqlalchemy.orm.exc.NoResultFound:
         raise NotUser("UserUnRegiser")
     except (KeyError):

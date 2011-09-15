@@ -4,61 +4,56 @@ Created on 13.09.2011
 @author: corwin
 '''
 import os
-import sqlite3
+
+from sqlalchemy import create_engine, Table, Boolean, Enum, Column, Integer, String, MetaData, Date, ForeignKey, DateTime
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 from config import DB_CONFIG
 
-class User:
-    table_name = "users"
-    name = None
-    password = None
-    
-    def __init__(self, obj):
-        self.name = obj[keys()[0]];
-        self.password = obj[keys()[1]];
-    
-    def keys(self): #не смог придумать лучшего имени
-        return ("key", "password")
-    
-    def values(self):
-        return (self.name, self.password)
-        
-     
-class Connected_User(User):
-    table_name = "connected_users"
-    sid = None
+Base = declarative_base()
 
+class User(Base):
+    __table_name__ = "users"
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    password = Column(String, nullable=False)
+    sid = Column(String, nullable=True)
+    
+    def __init__(self, name, password):
+        self.name = name;
+        self.password = password;
+    
+	def genSid()
+		sid = name+password
+		return sid  
+    
+	def __repr__(self):
+       return "<User('%s','%s',)>" % (self.name, self.password)
+   
+   
 class DataBase:
-    db = None
+    #потом покуприть мануал и заменить на майскл
+    db =  create_engine('sqlite:///:memory:', echo=True)
+    session = sessionmaker(bind=db)
     
-    def __init__(self ):
-        create = not os.path.exists( DB_CONFIG["location"])
-        self.db = sqlite3.connect( DB_CONFIG["location"])
-        if create:
-            cursor = self.db.cursor()
-            cursor.execute("CREATE TABLE users ("
-                "id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL, "
-                "user TEXT UNIQUE NOT NULL,"
-                "password TEXT UNIQUE NOT NULL)")
-            cursor.execute("CREATE TABLE connected_users ("
-                "sid INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL, "
-                "user_id INTEGER NOT NULL, "
-                "FOREIGN KEY (user_id) REFERENCES users)")
-            self.db.commit()
-
-    def checkUser(self, user):
-        return
-    def chechSID(self, sid):
-        return
     def add(self, obj): # потом по нормальному занаследовать классы и повесить исключение
-       
-       cursor = self.db.cursor()
-       cursor.execute("INSERT INTO ? (?) VALUES (?)", 
-                      obj.table_name(), obj.keys(), obj.values())
-       self.db.commit() 
+        self.session.add(obj)
+        self.commit()
+    return
+    
+    def query(self, obj): # потом по нормальному занаследовать классы и повесить исключение
+        self.session.query(obj)
     return
 
-    def rm(db, user):
+    def commit(self): # потом по нормальному занаследовать классы и повесить исключение
+        self.commit()
+    return
+
+    def rm(db, object):
+        self.session.delete(obj)
+        self.commit()
     return
 
 data_Base = DataBase()
