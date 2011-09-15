@@ -63,8 +63,15 @@ def login_user(userName):
 
     return
 
-def logout_user(json):
-    return
+def logout_user(sid):
+	try
+		user =data_Base.query(User).filter_by(sid = sid).one() 
+		user.sid=None
+		data_Base.commit()
+		return responded_ok()
+	except sqlalchemy.orm.exc.NoResultFound:
+        raise NotUser("UserUnRegiser")
+
 
 def responded_ok(AdditionParams = None):
 	res = {"status":"ok",}
