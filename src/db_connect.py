@@ -14,23 +14,23 @@ from config import DB_CONFIG
 Base = declarative_base()
 
 class User(Base):
-    __table_name__ = "users"
+	__tablename__ = "users"
+	
+	id = Column(Integer, primary_key=True)
+	name = Column(String, nullable=False)
+	password = Column(String, nullable=False)
+	sid = Column(String, nullable=True)
     
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    password = Column(String, nullable=False)
-    sid = Column(String, nullable=True)
+	def __init__(self, name, password):
+		self.name = name;
+		self.password = password;
     
-    def __init__(self, name, password):
-        self.name = name;
-        self.password = password;
-    
-	def genSid()
-		sid = name+password
-		return sid  
+	def genSid(self):
+		self.sid = name+password
+		return sel.sid  
     
 	def __repr__(self):
-       return "<User('%s','%s',)>" % (self.name, self.password)
+		return "<User('%s','%s',)>" % (self.name, self.password)
    
    
 class DataBase:
@@ -41,20 +41,20 @@ class DataBase:
     def add(self, obj): # потом по нормальному занаследовать классы и повесить исключение
         self.session.add(obj)
         self.commit()
-    return
+    
     
     def query(self, obj): # потом по нормальному занаследовать классы и повесить исключение
         self.session.query(obj)
-    return
+    
 
     def commit(self): # потом по нормальному занаследовать классы и повесить исключение
         self.commit()
-    return
+    
 
     def rm(db, object):
         self.session.delete(obj)
         self.commit()
-    return
+    
 
 data_Base = DataBase()
         

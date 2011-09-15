@@ -9,15 +9,15 @@ import json
 import errors
 import db_connect
 
-actions = dict(
-               "register"= "register_user",
-               "login"= "login_user",
-               "logout"= "logout_user",
-               )
+actions = {
+               "register": "register_user",
+               "login": "login_user",
+               "logout": "logout_user",
+               }
 
 
 def parse_request(json):
-    try
+    try:
         json = json.loads(json)
         
         if not isinstance(json, dict):
@@ -30,7 +30,7 @@ def parse_request(json):
                 raise BadCommand("UnIndefined command")
             except (TypeError):
                 raise BadCommand("bad command") #проблеема с паараметрами хз как написать
-            except (RequestException) e:
+            except (RequestException) as e:
                 raise e
         except (KeyError):
             raise BadRequest("not commands")
@@ -39,7 +39,7 @@ def parse_request(json):
         raise BadRequest("Request is not json")
     
 def register_user(user, password):
-    try #gпотом могет из дб кидать
+    try: #gпотом могет из дб кидать
         user = User(user, password)
         userInDb = data_Base.query(User).filter_by(name = user.name).one()
         
@@ -51,11 +51,12 @@ def register_user(user, password):
     return
 
 def login_user(userName):
-    try #gпотом могет из дб кидать
-        if (userInDb = data_Base.query(User).filter_by(name = user.name).one().password != password) 
+    try: #gпотом могет из дб кидать
+        userInDb = data_Base.query(User).filter_by(name = user.name).one()
+        if userInDb.password != password: 
            raise BadNameOrPassword("Wrong password")
         user = User(user, password)
-		return responded_ok({"sid": user.create_sid()})
+        return responded_ok({"sid": user.create_sid()})
     except sqlalchemy.orm.exc.NoResultFound:
         raise NotUser("UserUnRegiser")
     except (KeyError):
@@ -64,17 +65,18 @@ def login_user(userName):
     return
 
 def logout_user(sid):
-	try
+	try:
 		user =data_Base.query(User).filter_by(sid = sid).one() 
 		user.sid=None
 		data_Base.commit()
 		return responded_ok()
 	except sqlalchemy.orm.exc.NoResultFound:
-        raise NotUser("UserUnRegiser")
-
+		raise NotUser("UserUnRegiser")
+	
+    
 
 def responded_ok(AdditionParams = None):
-	res = {"status":"ok",}
+	res = {"status":"ok"}
 	for param in AdditionalParams:
 		res.add(param)
-    return res
+	return res
