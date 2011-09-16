@@ -19,8 +19,8 @@ class RequestException(Exception):
 		self.status = status
 		self.message = message
 	
-	def toJSON(self):
-		json.dumps({"status":self.status, "message":self.message}, **JSON_DUMPS_FORMAT)
+	def toDict(self):
+		return {"status":self.status, "message":self.message}
 
 errors = ("NotComand", "BadCommand", "BadRequest", "BadNameOrPassword", "NotUser")
 

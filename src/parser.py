@@ -9,14 +9,23 @@ import json
 import errors
 import db_connect
 
+from config import JSON_DUMPS_FORMAT
+
 actions = {
                "register": "register_user",
                "login": "login_user",
                "logout": "logout_user",
                }
 
+def parse_request(json):#думал написать комплить но не уверен в верности фразы 
+    json_dump = lambda dict: json.dumps(dict, **JSON_DUMPS_FORMAT)
+    try:
+        return json_dump(do_request(json))
+    except (RequestException) as e:
+        return json_dump(e.toDict())
+    return
 
-def parse_request(json):
+def do_request(json):
     try:
         json = json.loads(json)
         
@@ -34,12 +43,11 @@ def parse_request(json):
                 raise e
         except (KeyError):
             raise BadRequest("not commands")
-        
     except (TypeError):
         raise BadRequest("Request is not json")
     
 def register_user(user, password):
-    try: #gпотом могет из дб кидать
+    try: #потом могет из дб кидать
         user = User(user, password)
         userInDb = data_Base.query(User).filter_by(name = user.name).one()
         
@@ -59,8 +67,6 @@ def login_user(userName):
         return responded_ok({"sid": user.create_sid()})
     except sqlalchemy.orm.exc.NoResultFound:
         raise NotUser("UserUnRegiser")
-    except (KeyError):
-        raise BadCommand("bad params")   
 
     return
 
