@@ -1,79 +1,124 @@
 #!/usr/bin/python
 '''
-Created on 13.09.2011
+временно позаимствовал тестер .....
 
-@author: corwin
+могет кто потом прикрут......
 
-вот здесь вот будет временый псевдо тестер... потом заменю на  нормальный 
 '''
-import json
+
+import glob
+import sys
 import os
-import parser
-import errors
+import json
+import optparse
+import random
 
-def load_test(path):
-	test_text = "" #потом прицеплю что б изфайла считывала
-	test_requests = ()
-	
-	q =0
-	start =0
-	index = 0
-	for ch in test_text:
-		if ch == "{":
-			q +=1
-			if q == 1:
-				start = index
-		elif ch == "}":
-			q -=1
-			if q == 0:
-				test_requests.append(test_text[start:index])
-		index +=1
-	return
+import config
 
-fails_test =0;
-ok_test = 0;
+config.DEBUG = True
+#common.COMMANDLINE = True
 
-test_num =0
+from parser import parse_request
+from db_connect import data_Base as dbi
 
-def fail(s):
-	global test_num
-	test_num +=1  
+no_answer_count = failed_count = passed_count = 0
 
-	global fails_test
-	fails_test += 1
+def load_json(filename):
+    find_next = lambda s, pos: json.decoder.WHITESPACE.match(s, pos).end()
+    text = open(filename).read()
+    pos, end = 0, len(text)
+    result = []
+    pos = find_next(text, 0)
+    try:
+        while pos != end:
+            request, pos = json._default_decoder.raw_decode(text, idx=pos)
+            result.append(json.dumps(request))
+            pos = find_next(text, pos)
+    except ValueError:
+        return result + [text[pos:]]
+    return result
 
-	print("test %1: FAIL (%s)", test_num, s)  
+def error(message):
+    print(message)
+    return 1
 
-def ok():
-	global test_num
-	test_num +=1
+def passed():
+    global passed_count
+    passed_count += 1
+    return 'OK'
 
-	global ok_test
-	ok_test += 1
+def failed():
+    global failed_count
+    failed_count += 1
+    return 'FAIL'
 
-	print("test %1: OK", test_num)  
+def no_answer():
+    global no_answer_count
+    no_answer_count += 1
+    return 'NO ANSWER'
 
+def compare(testname):
+    if os.path.exists(testname + '.ans'):
+        answer = load_json(testname + '.ans')
+        output = load_json(testname + '.out')
+        return passed() if answer == output else failed()
+    else:
+        return no_answer()
 
-def json_enc(dic):
-	json.dumps(dic, sort_keys=True)
+def launch(test, debug=False, verbose=False, interactive=False):
+    random.seed(0)
+    testname = os.path.splitext(os.path.normpath(test))[0]
+    requests = load_json(test)
+    try:
+        oldout = sys.stdout
+        with open(testname + '.out', 'w') as sys.stdout:
+            for request in requests:
+                print(parse_request(request))
+    finally:
+        sys.stdout = oldout
+        dbi().clear()
 
-
-def test():
-	cmd = {
-		"cmd": "",
-		"foo": "bar"
-	}
-
-	try:
-		parser.parse_request(json_enc(cmd))
-	except errors.BadRequest:
-		ok()
-	except:
-		fail("unknown exp")   
+    result = compare(testname)
+    if result != 'OK' or verbose or debug:
+        print('Test {0} {1}'.format(os.path.normpath(test), result))
+    if debug or (interactive and result != 'OK'):
+        print(open(testname + '.out').read())
+        if interactive and result != 'OK':
+            ans = ""
+            while ans not in ('y', 'yes', 'n', 'no', 'yea', 'nay'):
+                ans = input('Would you like to replace answer with this output?(y/n)').lower()
+            if ans[0] == 'y':
+                os.rename(testname + '.out', testname + '.ans')
 
 def main():
-	test()
-    
+    parser = optparse.OptionParser(usage='test.py [options] <test(s)>')
+    parser.disable_interspersed_args()
+    boolean_options = {
+        'verbose': 'show successful tests',
+        'debug': 'show tests output (includes --verbose)',
+        'interactive': 'interactively decide what to do with failed tests'
+    }
+    for option, description in boolean_options.items():
+        parser.add_option('-' + option[0], '--' + option, action='store_true', dest=option,
+            default=False, help=description)
+    try:
+        (options, args) = parser.parse_args()
+    except optparse.OptionError as e:
+        return error(e.msg)
+
+    if not len(args):
+        return error(parser.format_help())
+    for arg in args:
+        if not os.path.exists(arg):
+            return error('Path not found: {0}'.format(arg))
+        if os.path.isdir(arg):
+            for dirpath, dirnames, filenames in os.walk(arg):
+                for test in glob.iglob(os.path.join(dirpath, '*.tst')):
+                    launch(test, debug=options.debug, verbose=options.verbose, interactive=options.interactive)
+        else:
+            launch(arg, debug=options.debug, verbose=options.verbose, interactive=options.interactive)
+    print('Summary: {0} passed, {1} failed, {2} no answer'.format(passed_count, failed_count, no_answer_count))
+    return 0
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
