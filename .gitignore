@@ -2,4 +2,4 @@ src/__pycache__/*
 *.swp
 *.swo
 *.swn
-
+*.out
