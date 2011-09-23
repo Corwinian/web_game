@@ -48,13 +48,18 @@ def register_user(username, password):
 		raise BadPassword(); 
 	if dbi.query(User).filter_by(name="user").count() != 0:
 		raise UsernameTaken()
+	dbi.add(User(username, password))
 	return responded_ok()
 
 def login_user(userame):
+	if not check_username(username):
+		raise BadUserName(); 
+	if not check_password(password):
+		raise BadPassword(); 
 	try: #потом могет из дб кидать
 		userInDb = dbi.query(User).filter_by(name = user.name).one()
 		if userInDb.password != password: 
-			raise BadNameOrPassword("Wrong password")
+			raise BadNameOrPassword()
 		user = User(user, password)
 		return responded_ok({"sid": user.create_sid()})
 	except sqlalchemy.orm.exc.NoResultFound:
