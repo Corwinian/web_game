@@ -26,9 +26,10 @@ class User(Base):
 		self.name = name;
 		self.password = password;
 	
-	def genSid(self):
-		self.sid = name+password
-		return sel.sid  
+	def setSid(self):
+		self.sid = self.name + self.password
+#		db.add(self)
+		db.commit()
 	
 	def __repr__(self):
 		return "<User('%s','%s',)>" % (self.name, self.password)
@@ -49,14 +50,14 @@ class DataBase:
 	def add(self, obj): 
 		self.session.add(obj)
 		self.commit()
-	
+		return None 
 	
 	def query(self, *args, **kwargs): 
 		return self.session.query(*args,**kwargs)
 	
 
 	def commit(self): 
-		self.commit()
+		self.session.commit()
 	
 
 	def rm(self, object):

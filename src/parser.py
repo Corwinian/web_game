@@ -46,9 +46,10 @@ def register_user(username, password):
 		raise BadUserName(); 
 	if not check_password(password):
 		raise BadPassword(); 
-	if dbi.query(User).filter_by(name="user").count() != 0:
+	if dbi.query(User).filter_by(name = username).count() != 0:
 		raise UsernameTaken()
-	dbi.add(User(username, password))
+	newUser = User(username, password)
+	dbi.add(newUser)
 	return responded_ok()
 
 def login_user(username,password):
@@ -57,30 +58,28 @@ def login_user(username,password):
 	if not check_password(password):
 		raise BadPassword(); 
 	try: #потом могет из дб кидать
-		userInDb = dbi.query(User).filter_by(name = username).one()
-		if userInDb.password != password: 
-			raise BadNameOrPassword()
-		user = User(user, password)
-		return responded_ok({"sid": user.create_sid()})
+		user = dbi.query(User).filter_by(name = username).one()
+		if user.password != password: 
+			raise BadUsernameOrPassword()
+		user.setSid()
+		return responded_ok({"sid": user.sid})
 	except sqlalchemy.orm.exc.NoResultFound:
 		raise BadUsernameOrPassword("Wrong username")
-	return
 
 def logout_user(sid):
 	try:
-		user =data_Base.query(User).filter_by(sid = sid).one() 
-		user.sid=None
-		data_Base.commit()
+		user = dbi.query(User).filter_by(sid = sid).one() 
+		user.sid = None
+		dbi.commit()
 		return responded_ok()
 	except sqlalchemy.orm.exc.NoResultFound:
-		raise NotUser("UserUnRegiser")
+		raise BadSid()
 	
 
 def responded_ok(AdditionParams = None):
 	res = {"status":"ok"}
 	if AdditionParams != None:
-		for param in AdditionParams:
-			res.add(param)
+		res.update(AdditionParams)
 	return res
 
 
