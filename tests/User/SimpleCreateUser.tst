@@ -1,5 +1,5 @@
 {
-	"action":"regiser",
+	"action":"register",
 	"username":"user",
 	"password":"pass"
 }

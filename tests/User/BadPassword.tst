@@ -1,11 +1,11 @@
 {
-	"action":"regiser",
+	"action":"register",
 	"username":"user",
 	"password":"pass"
 }
 
 {
-	"action":"regiser",
+	"action":"login",
 	"username":"user",
 	"password":"passa"
 }

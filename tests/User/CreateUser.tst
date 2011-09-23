@@ -1,5 +1,5 @@
 {
-	"action":"regiser",
+	"action":"register",
 	"username":"user",
 	"password":"pass"
 }
@@ -12,5 +12,5 @@
 
 {
 	"action":"logout",
-	"sid":"1",
+	"sid":"userpass"
 }
