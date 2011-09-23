@@ -19,7 +19,7 @@ config.DEBUG = True
 #common.COMMANDLINE = True
 
 from parser import parse_request
-from db_connect import data_Base as dbi
+from db_connect import db as dbi
 
 no_answer_count = failed_count = passed_count = 0
 
@@ -76,7 +76,7 @@ def launch(test, debug=False, verbose=False, interactive=False):
                 print(parse_request(request))
     finally:
         sys.stdout = oldout
-        dbi().clear()
+        dbi.clear()
 
     result = compare(testname)
     if result != 'OK' or verbose or debug:

@@ -20,41 +20,51 @@ class User(Base):
 	name = Column(String, nullable=False)
 	password = Column(String, nullable=False)
 	sid = Column(String, nullable=True)
-    
+	
 	def __init__(self, name, password):
+		super().__init__()
 		self.name = name;
 		self.password = password;
-    
+	
 	def genSid(self):
 		self.sid = name+password
 		return sel.sid  
-    
+	
 	def __repr__(self):
 		return "<User('%s','%s',)>" % (self.name, self.password)
    
    
 class DataBase:
-    #потом покуприть мануал и заменить на майскл
-    db =  create_engine('sqlite:///:memory:', echo=True)
-    session = sessionmaker(bind=db)
-    
-    def add(self, obj): # потом по нормальному занаследовать классы и повесить исключение
-        self.session.add(obj)
-        self.commit()
-    
-    
-    def query(self, obj): # потом по нормальному занаследовать классы и повесить исключение
-        self.session.query(obj)
-    
+	#потом покуприть мануал и заменить на майскл
+	instance = None
 
-    def commit(self): # потом по нормальному занаследовать классы и повесить исключение
-        self.commit()
-    
+	def __init__(self):
+		self.db =  create_engine('sqlite:///:memory:', echo=False)
+		Base.metadata.create_all(self.db)
+		Session = sessionmaker(bind=self.db)
+		self.session = Session()
+		if (self.session == None):
+			print("qqqq")
+	
+	def add(self, obj): 
+		self.session.add(obj)
+		self.commit()
+	
+	
+	def query(self, *args, **kwargs): 
+		return self.session.query(*args,**kwargs)
+	
 
-    def rm(db, object):
-        self.session.delete(obj)
-        self.commit()
-    
+	def commit(self): 
+		self.commit()
+	
 
-data_Base = DataBase()
-        
+	def rm(self, object):
+		self.session.delete(obj)
+		self.commit()   
+
+	def clear(self):
+		for table in Base.metadata.sorted_tables:
+			self.db.execute(table.delete())
+
+db = DataBase()

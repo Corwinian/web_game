@@ -4,7 +4,7 @@ Created on 13.09.2011
 @author: corwin
 '''
 
-IS_DEBUG = 1;
+DEBUG = 1;
 
 JSON_DUMPS_FORMAT = {
     "sort_keys": "true",

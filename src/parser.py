@@ -6,69 +6,60 @@ Created on 11.09.2011
 '''
 
 import json
-import errors
-import db_connect
-
+from errors import *
+from db_connect import * 
+from db_connect import db as dbi 
+import sqlalchemy
 from config import JSON_DUMPS_FORMAT
 
-actions = {
-               "register": "register_user",
-               "login": "login_user",
-               "logout": "logout_user",
-               }
+actions = {}
 
-def parse_request(json):#думал написать комплить но не уверен в верности фразы 
-    json_dump = lambda dict: json.dumps(dict, **JSON_DUMPS_FORMAT)
-    try:
-        return json_dump(do_request(json))
-    except (RequestException) as e:
-        return json_dump(e.toDict())
-    return
+def parse_request(request): #думал написать комплить но не уверен в верности фразы 
+	json_dump = lambda dict: json.dumps(dict, **JSON_DUMPS_FORMAT)
+	try:
+		return json_dump(do_request(request))
+	except (RequestException) as e:
+		return json_dump(e.toDict())
 
-def do_request(json):
-    try:
-        json = json.loads(json)
-        
-        if not isinstance(json, dict):
-            raise BadRequest("Json must be is object")
-        try:
-            comand  = json.pop("cmd")
-            try:
-                return actions[comand](**json)
-            except (KeyError):
-                raise BadCommand("UnIndefined command")
-            except (TypeError):
-                raise BadCommand("bad command") #проблеема с паараметрами хз как написать
-            except (RequestException) as e:
-                raise e
-        except (KeyError):
-            raise BadRequest("not commands")
-    except (TypeError):
-        raise BadRequest("Request is not json")
-    
-def register_user(user, password):
-    try: #потом могет из дб кидать
-        user = User(user, password)
-        userInDb = data_Base.query(User).filter_by(name = user.name).one()
-        
-    except sqlalchemy.orm.exc.NoResultFound:
-        user = User(username, password)
-        dbi().add(user)
-    except (KeyError):
-        raise BadCommand("bad params")   
-    return
+def do_request(request):
+	try:
+		request = (json.loads(request))
+		if not isinstance(request, dict):
+			raise BadJson("Json must be is object")
+		try:
+			if "action" not in request.keys():
+				raise BadAction("Not Comand")
+			return actions[request.pop("action")](**request)
+		except (KeyError):
+			raise BadAction("Unindefined command")
+	except ValueError:
+		raise BadJson('Error in JSON syntax') 
+		
+def check_username(name):
+	return True
 
-def login_user(userName):
-    try: #gпотом могет из дб кидать
-        userInDb = data_Base.query(User).filter_by(name = user.name).one()
-        if userInDb.password != password: 
-           raise BadNameOrPassword("Wrong password")
-        user = User(user, password)
-        return responded_ok({"sid": user.create_sid()})
-    except sqlalchemy.orm.exc.NoResultFound:
-        raise NotUser("UserUnRegiser")
+def check_password(pas):
+	return True
 
-    return
+def register_user(username, password):
+	if not check_username(username):
+		raise BadUserName(); 
+	if not check_password(password):
+		raise BadPassword(); 
+	if dbi.query(User).filter_by(name="user").count() != 0:
+		raise UsernameTaken()
+	return responded_ok()
+
+def login_user(userame):
+	try: #потом могет из дб кидать
+		userInDb = dbi.query(User).filter_by(name = user.name).one()
+		if userInDb.password != password: 
+			raise BadNameOrPassword("Wrong password")
+		user = User(user, password)
+		return responded_ok({"sid": user.create_sid()})
+	except sqlalchemy.orm.exc.NoResultFound:
+		raise BadNameOrPassword("Wrong username")
+	return
 
 def logout_user(sid):
 	try:
@@ -79,10 +70,17 @@ def logout_user(sid):
 	except sqlalchemy.orm.exc.NoResultFound:
 		raise NotUser("UserUnRegiser")
 	
-    
 
 def responded_ok(AdditionParams = None):
 	res = {"status":"ok"}
-	for param in AdditionalParams:
-		res.add(param)
+	if AdditionParams != None:
+		for param in AdditionParams:
+			res.add(param)
 	return res
+
+
+actions = {
+				"register": register_user,
+				"login": "login_user",
+				"logout": "logout_user",
+}

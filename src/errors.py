@@ -4,29 +4,29 @@ Created on 11.09.2011
 
 @author: corwin
 '''
-import json
 
-from config import JSON_DUMPS_FORMAT
-
+errors = (
+	"badAction", 
+	"badJson", 
+	"badUsername",
+	"badPassword", 
+	"usernameTaken", 
+	"badUsernameOrPassword", 
+	"userLoggedIn", 
+	"badSid")
 
 class RequestException(Exception):
 	'''
     '''
-	status = None
-	message = None
-	
-	def __init__(self, status, message):
-		self.status = status
+	def __init__(self, message = None):
 		self.message = message
 	
 	def toDict(self):
-		return {"status":self.status, "message":self.message}
+		return {"result" : self.result} if self.message != None else {"result" : self.result, "message" : self.message} 
 
-errors = ("NotComand", "BadCommand", "BadRequest", "BadNameOrPassword", "NotUser")
-
-gen_exp = lambda name, status: type(name, (RequestException,), { "status": status })
 
 for e in errors:
-	globals()[e] = gen_exp(e,e)
+	name = e[0].upper() + e[1:]
+	globals()[name] =  type(name, (RequestException,), { "result": e })
 
 
