@@ -15,7 +15,15 @@ errors = (
 	"userLoggedIn",
 	"badMapName",
 	"badPlaersNum",
-	"notMaps"
+	"notMaps",
+	"badMapId",
+	"badGameName",
+	"badGameDescription",
+	"badGameState",
+	"alreadyInGame",
+	"tooManyPlayers",
+	"notInGame",
+	"badReadinessStatus",
 )
 
 class RequestException(Exception):
