@@ -33,8 +33,23 @@ class User(Base):
 	
 	def __repr__(self):
 		return "<User('%s','%s',)>" % (self.name, self.password)
+
+class Map(Base):
+	__tablename__ = "maps"
+	
+	id = Column(Integer, primary_key=True)
+	name = Column(String, nullable=False)
+	playersNumper = Column(Integer, nullable=False)
+	
+	def __init__(self, name, playersNumper):
+		super().__init__()
+		self.name = name
+		self.playersNumper = playersNumper
    
-   
+	def __repr__(self):#потом подправить форматированый вывод
+		return "<User('%s','%s',)>" % (self.name, self.playersNumper)
+
+
 class DataBase:
 	#потом покуприть мануал и заменить на майскл
 	instance = None
