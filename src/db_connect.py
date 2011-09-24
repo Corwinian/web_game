@@ -49,6 +49,21 @@ class Map(Base):
 	def __repr__(self):#потом подправить форматированый вывод
 		return "<User('%s','%s',)>" % (self.name, self.playersNumper)
 
+class Game(Base):
+	id = Column(Integer, primary_key=True)
+	name = Column(String, nullable=False)
+	playersNum = Column(Integer, nullable=False)
+	mapId = Column(Integer, ForeignKey('maps.id', onupdate='CASCADE', ondelete='CASCADE'))
+	Description = Column(String, nullable=True)
+
+	def __init__(self, name, playersNumper, mapId, Description):
+		self.name = name
+		self.playersNumper = playersNumper
+		self.mapId = mapId 
+		self.Description = Description 
+   
+	def __repr__(self):#потом подправить форматированый вывод
+		return "<Gake('%s','%s',)>" % (self.name, self.playersNumper)
 
 class DataBase:
 	#потом покуприть мануал и заменить на майскл
