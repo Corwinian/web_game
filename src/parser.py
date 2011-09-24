@@ -91,6 +91,11 @@ def get_maps_list():
 	except:
 		raise NotMaps() 
 
+def create_def_maps ():
+	for i in range(1, 4):
+		dbi.add(Map("defaultMap" + str(i) , i + 1))
+	return responded_ok()
+
 def responded_ok(AdditionParams = None):
 	res = {"status":"ok"}
 	if AdditionParams != None:
