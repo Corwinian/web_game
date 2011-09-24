@@ -1,0 +1,15 @@
+{
+    "mapId": 1, 
+    "status": "ok"
+}
+{
+    "mapId": 2, 
+    "status": "ok"
+}
+{
+    "mapList": [
+        1, 
+        2
+    ], 
+    "status": "ok"
+}

@@ -33,7 +33,7 @@ def do_request(request):
 		except (KeyError):
 			raise BadAction("Unindefined command")
 	except ValueError:
-		raise BadJson('Error in JSON syntax') 
+		raise BadJson('Error in JSON syntaxa') 
 		
 def check_username(name):
 	return True
@@ -66,6 +66,7 @@ def login_user(username,password):
 	except sqlalchemy.orm.exc.NoResultFound:
 		raise BadUsernameOrPassword("Wrong username")
 
+
 def logout_user(sid):
 	try:
 		user = dbi.query(User).filter_by(sid = sid).one() 
@@ -74,7 +75,26 @@ def logout_user(sid):
 		return responded_ok()
 	except sqlalchemy.orm.exc.NoResultFound:
 		raise BadSid()
-	
+
+def upload_map(mapName, playersNum):
+	if 1 > len(mapName) > 15 or not mapName.isprintable():
+		raise BadMapName()
+	if 1 > playersNum > 5: 
+		raise BadPlayersNum()
+	newMap  = Map(mapName, playersNum)
+	dbi.add(newMap)
+	return responded_ok({"mapId":newMap.id})
+
+def get_maps_list():
+	try:
+		return responded_ok({"mapList": [map[0] for map in dbi.query(Map.id).all()]})
+	except:
+		raise NotMaps() 
+
+def create_def_maps ():
+	for i in range(1, 4):
+		dbi.add(Map("defaultMap" + str(i) , i + 1))
+	return responded_ok()
 
 def responded_ok(AdditionParams = None):
 	res = {"status":"ok"}
@@ -82,9 +102,10 @@ def responded_ok(AdditionParams = None):
 		res.update(AdditionParams)
 	return res
 
-
 actions = {
 				"register": register_user,
 				"login": login_user,
 				"logout": logout_user,
+				"uploadMap": upload_map,
+				"getMapsList": get_maps_list
 }

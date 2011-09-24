@@ -12,8 +12,11 @@ errors = (
 	"badPassword", 
 	"usernameTaken", 
 	"badUsernameOrPassword", 
-	"userLoggedIn", 
-	"badSid")
+	"userLoggedIn",
+	"badMapName",
+	"badPlaersNum",
+	"notMaps"
+)
 
 class RequestException(Exception):
 	'''
@@ -22,7 +25,7 @@ class RequestException(Exception):
 		self.message = message
 	
 	def toDict(self):
-		return {"result" : self.result} if self.message != None else {"result" : self.result, "message" : self.message} 
+		return {"result" : self.result} if self.message == None else {"result" : self.result, "message" : self.message} 
 
 
 for e in errors:
