@@ -85,6 +85,12 @@ def upload_map(mapName, playersNum):
 	dbi.add(newMap)
 	return responded_ok({"mapId":newMap.id})
 
+def get_maps_list():
+	try:
+		return responded_ok({"mapList": [map[0] for map in dbi.query(Map.id).all()]})
+	except:
+		raise NotMaps() 
+
 def responded_ok(AdditionParams = None):
 	res = {"status":"ok"}
 	if AdditionParams != None:
@@ -95,5 +101,6 @@ actions = {
 				"register": register_user,
 				"login": login_user,
 				"logout": logout_user,
-				"uploadMap": upload_map
+				"uploadMap": upload_map,
+				"getMapsList": get_maps_list
 }
