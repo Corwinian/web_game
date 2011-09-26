@@ -94,6 +94,12 @@ class DataBase:
 		self.session.delete(obj)
 		self.commit()   
 
+	def checkSid(self, sid):
+		return self.query(User).filter(sid = sid).count() == 1 
+
+	def checkMap(self, mapId):
+		return self.query(Map).filter(id = mapId).count() == 1 
+
 	def clear(self):
 		for table in Base.metadata.sorted_tables:
 			self.db.execute(table.delete())
