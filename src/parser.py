@@ -96,6 +96,9 @@ def create_def_maps ():
 		dbi.add(Map("defaultMap" + str(i) , i + 1))
 	return responded_ok()
 
+def create_game(sid, gameName, mapId, playersNum, gameDescr=None):
+	return None
+
 def responded_ok(AdditionParams = None):
 	res = {"status":"ok"}
 	if AdditionParams != None:
@@ -107,5 +110,6 @@ actions = {
 				"login": login_user,
 				"logout": logout_user,
 				"uploadMap": upload_map,
-				"getMapsList": get_maps_list
+				"getMapsList": get_maps_list,
+				"createGame":create_game,
 }
