@@ -57,9 +57,10 @@ class Game(Base):
 	Description = Column(String, nullable=True)
 
 	def __init__(self, name, mapId, Description):
-
 		if !dbi.checkMap(mapId):
 			raise BadMapId()
+		if !self.checkGameName(name):
+			raise BadGameName()
 		self.mapId = mapId  
 		self.name = name
 		self.Description = Description
