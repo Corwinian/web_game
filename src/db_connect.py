@@ -9,6 +9,7 @@ from sqlalchemy import create_engine, Table, Boolean, Enum, Column, Integer, Str
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
+import errors 
 from config import DB_CONFIG
 
 Base = declarative_base()
@@ -112,6 +113,12 @@ class DataBase:
 			return self.query(User).filter(id = sid).one()
 		except:
 			raise BadSid()
+
+	def getGame(self, gameId):
+		try:
+			return self.query(Game).filter(id = gameId).one()
+		except:
+			raise BadGameId()
 
 	def getMap(selp, mapId):
 		try:
