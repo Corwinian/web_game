@@ -19,6 +19,7 @@ errors = (
 	"badMapId",
 	"badGameName",
 	"badGameDescription",
+	"notGames",
 	"badGameState",
 	"alreadyInGame",
 	"tooManyPlayers",
