@@ -73,6 +73,25 @@ class Game(Base):
 	def __repr__(self):#потом подправить форматированый вывод
 		return "<Gake('%s','%s',)>" % (self.name, self.playersNumper)
 
+#may be move this to class User
+class Player(Base):
+	__tablename__ = "players"
+	
+	id = Column(Integer, primary_key=True)
+	
+	userId = Column(Integer, ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
+	gameId = Column(Integer, ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
+	
+	def __init__(self, sid, gameId):
+		userId = dbi.getUser(sid).id
+		gameId = dbi.getGame(gameId).id		
+	#проверить колическо активных игроков
+#проверить не играет ли щас игрок
+#проверить щас стутус игрыЪЪЪЪ
+		
+	def __repr__(self):
+		return "<Player('%s','%s',)>" % (self.name, self.password)
+
 class DataBase:
 	#потом покуприть мануал и заменить на майскл
 	instance = None
