@@ -107,6 +107,12 @@ class DataBase:
 	def checkMap(self, mapId):
 		return self.query(Map).filter(id = mapId).count() == 1 
 
+	def getUser(self, sid):
+		try:
+			return self.query(User).filter(id = sid).one()
+		except:
+			raise BadSid()
+
 	def getMap(selp, mapId):
 		try:
 			return self.query(Map).filter(id = mapId).one()
