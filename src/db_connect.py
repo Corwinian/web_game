@@ -52,16 +52,22 @@ class Map(Base):
 class Game(Base):
 	id = Column(Integer, primary_key=True)
 	name = Column(String, nullable=False)
-	playersNum = Column(Integer, nullable=False)
+#придумать могет сделать inique
 	mapId = Column(Integer, ForeignKey('maps.id', onupdate='CASCADE', ondelete='CASCADE'))
 	Description = Column(String, nullable=True)
 
-	def __init__(self, name, playersNumper, mapId, Description):
+	def __init__(self, name, mapId, Description):
+
+		if !dbi.checkMap(mapId):
+			raise BadMapId()
+		self.mapId = mapId  
 		self.name = name
-		self.playersNumper = playersNumper
-		self.mapId = mapId 
-		self.Description = Description 
+		self.Description = Description
    
+	def checkGameName(self, name):
+		return 0 > len(name) > 50 
+			or dbi.query(Game).filter(name = name).count() != 0
+
 	def __repr__(self):#потом подправить форматированый вывод
 		return "<Gake('%s','%s',)>" % (self.name, self.playersNumper)
 
@@ -100,8 +106,15 @@ class DataBase:
 	def checkMap(self, mapId):
 		return self.query(Map).filter(id = mapId).count() == 1 
 
+	def getMap(selp, mapId):
+		try:
+			return self.query(Map).filter(id = mapId).one()
+		except:
+			return False;
+		
 	def clear(self):
 		for table in Base.metadata.sorted_tables:
+#проверяем мап id	
 			self.db.execute(table.delete())
 
 db = DataBase()
