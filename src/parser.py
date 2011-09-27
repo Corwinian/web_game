@@ -96,8 +96,13 @@ def create_def_maps ():
 		dbi.add(Map("defaultMap" + str(i) , i + 1))
 	return responded_ok()
 
-def create_game(sid, gameName, mapId, playersNum, gameDescr=None):
-	return None
+def create_game(sid, gameName, mapId, gameDescr=None):
+	if !dbi.checkSid(sid):
+		raise BadSid()
+
+	newGame = Game(gameName, mapId, gameDescr)
+	dbi.add(newGame)
+	return responded_ok({"gameId":newGame.id})
 
 def responded_ok(AdditionParams = None):
 	res = {"status":"ok"}
@@ -112,4 +117,5 @@ actions = {
 				"uploadMap": upload_map,
 				"getMapsList": get_maps_list,
 				"createGame":create_game,
+				"getGamesList": get_games_list,
 }
