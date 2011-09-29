@@ -10,6 +10,7 @@ errors = (
 	"badJson", 
 	"badUsername",
 	"badPassword", 
+	"badSid", 
 	"usernameTaken", 
 	"badUsernameOrPassword", 
 	"userLoggedIn",
