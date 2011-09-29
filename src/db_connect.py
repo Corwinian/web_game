@@ -42,6 +42,15 @@ class User(Base):
 		self.gameId = gameId
 		db.commit()
 
+	def leaveGame(self):
+		if self.gameId is None:
+			raise NotInGames()
+
+		db.getGame(gameId).rmPlayer()
+		
+		self.gameId = None
+		db.commit()
+
 	def __repr__(self):
 		return "<User('%s','%s',)>" % (self.name, self.password)
 
@@ -94,6 +103,9 @@ class Game(Base):
 		if self.gameStatus != gameStatusWaiting
 				raise TooManyPlayers()
 		self.playersNumber += 1
+		
+	def rmPlayer(self):
+		self.playersNumber -= 1
 		
 	def getMaxPlayersInGame(self):
 		return	bd.query(Map).filter_by(id = self.mapId).one().playersNumber

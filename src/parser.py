@@ -108,6 +108,10 @@ def join_game(sid, gameId):
 	dbi.gameUser(sid).joinGame(gameId)
 	return responded_ok()
 
+def leave_game(sid):
+	dbi.gameUser(sid).leaveGame()
+	return responded_ok()
+
 def get_games_list():
 	try:
 		return responded_ok({"gamesList": [game[0] for game in dbi.query(Game.id).all()]})
@@ -129,4 +133,5 @@ actions = {
 				"createGame":create_game,
 				"getGamesList": get_games_list,
 				"joinGame": join_game,
+				"leaveGame": leave_game,
 }
