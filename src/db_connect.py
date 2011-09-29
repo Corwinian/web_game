@@ -9,7 +9,7 @@ from sqlalchemy import create_engine, Table, Boolean, Enum, Column, Integer, Str
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-import errors 
+from errors import *
 from config import DB_CONFIG
 
 Base = declarative_base()
@@ -51,6 +51,8 @@ class Map(Base):
 		return "<User('%s','%s',)>" % (self.name, self.playersNumper)
 
 class Game(Base):
+	__tablename__ = "games"
+
 	id = Column(Integer, primary_key=True)
 	name = Column(String, nullable=False)
 #придумать могет сделать inique
@@ -58,17 +60,16 @@ class Game(Base):
 	Description = Column(String, nullable=True)
 
 	def __init__(self, name, mapId, Description):
-		if !dbi.checkMap(mapId):
+		if not db.checkMap(mapId):
 			raise BadMapId()
-		if !self.checkGameName(name):
+		if not self.checkGameName(name):
 			raise BadGameName()
 		self.mapId = mapId  
 		self.name = name
 		self.Description = Description
    
 	def checkGameName(self, name):
-		return 0 > len(name) > 50 
-			or dbi.query(Game).filter(name = name).count() != 0
+		return 0 < len(name) < 50 or db.query(Game).filter_by(name = name).count() == 0
 
 	def __repr__(self):#потом подправить форматированый вывод
 		return "<Gake('%s','%s',)>" % (self.name, self.playersNumper)
@@ -83,8 +84,8 @@ class Player(Base):
 	gameId = Column(Integer, ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
 	
 	def __init__(self, sid, gameId):
-		userId = dbi.getUser(sid).id
-		gameId = dbi.getGame(gameId).id		
+		userId = db.getUser(sid).id
+		gameId = db.getGame(gameId).id		
 	#проверить колическо активных игроков
 #проверить не играет ли щас игрок
 #проверить щас стутус игрыЪЪЪЪ
@@ -122,26 +123,26 @@ class DataBase:
 		self.commit()   
 
 	def checkSid(self, sid):
-		return self.query(User).filter(sid = sid).count() == 1 
+		return self.query(User).filter_by(sid = sid).count() == 1 
 
 	def checkMap(self, mapId):
-		return self.query(Map).filter(id = mapId).count() == 1 
+		return self.query(Map).filter_by(id = mapId).count() == 1 
 
 	def getUser(self, sid):
 		try:
-			return self.query(User).filter(id = sid).one()
+			return self.query(User).filter_by(id = sid).one()
 		except:
 			raise BadSid()
 
 	def getGame(self, gameId):
 		try:
-			return self.query(Game).filter(id = gameId).one()
+			return self.query(Game).filter_by(id = gameId).one()
 		except:
 			raise BadGameId()
 
 	def getMap(selp, mapId):
 		try:
-			return self.query(Map).filter(id = mapId).one()
+			return self.query(Map).filter_by(id = mapId).one()
 		except:
 			return False;
 		
