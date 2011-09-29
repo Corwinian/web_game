@@ -128,4 +128,5 @@ actions = {
 				"getMapsList": get_maps_list,
 				"createGame":create_game,
 				"getGamesList": get_games_list,
+				"joinGame": join_game,
 }

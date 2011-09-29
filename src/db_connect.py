@@ -33,8 +33,8 @@ class User(Base):
 #		db.add(self)
 		db.commit()
 	
-	def	joinGame(self, gameId):
-		if self.gameId not is Null:
+	def joinGame(self, gameId):
+		if self.gameId not is None:
 			raise AlreadyInGames()
 
 		db.getGame(gameId).addPlayer()
