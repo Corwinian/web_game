@@ -40,15 +40,15 @@ class Map(Base):
 	
 	id = Column(Integer, primary_key=True)
 	name = Column(String, nullable=False)
-	playersNumper = Column(Integer, nullable=False)
+	playersNumber = Column(Integer, nullable=False)
 	
-	def __init__(self, name, playersNumper):
+	def __init__(self, name, playersNumber):
 		super().__init__()
 		self.name = name
-		self.playersNumper = playersNumper
+		self.playersNumber = playersNumber
    
 	def __repr__(self):#потом подправить форматированый вывод
-		return "<User('%s','%s',)>" % (self.name, self.playersNumper)
+		return "<User('%s','%s',)>" % (self.name, self.playersNumber)
 
 class Game(Base):
 	__tablename__ = "games"
@@ -72,10 +72,10 @@ class Game(Base):
 		return 0 < len(name) < 50 or db.query(Game).filter_by(name = name).count() == 0
 
 	def getMaxPlayersInGame(self):
-		return	bd.query(Map).filter_by(id = self.mapId).one().playersNumper
+		return	bd.query(Map).filter_by(id = self.mapId).one().playersNumber
 
 	def __repr__(self):#потом подправить форматированый вывод
-		return "<Gake('%s','%s',)>" % (self.name, self.playersNumper)
+		return "<Gake('%s','%s',)>" % (self.name, self.playersNumber)
 
 #may be move this to class User
 class Player(Base):
