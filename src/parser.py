@@ -105,11 +105,11 @@ def create_game(sid, gameName, mapId, gameDescr=None):
 	return responded_ok({"gameId":newGame.id})
 
 def join_game(sid, gameId):
-	dbi.gameUser(sid).joinGame(gameId)
+	dbi.getUser(sid).joinGame(gameId)
 	return responded_ok()
 
 def leave_game(sid):
-	dbi.gameUser(sid).leaveGame()
+	dbi.getUser(sid).leaveGame()
 	return responded_ok()
 
 def get_games_list():
