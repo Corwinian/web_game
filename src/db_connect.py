@@ -6,7 +6,7 @@ Created on 13.09.2011
 import os
 
 from sqlalchemy import create_engine, Table, Boolean, Enum, Column, Integer, String, MetaData, Date, ForeignKey, DateTime
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, exc
 from sqlalchemy.ext.declarative import declarative_base
 
 from errors import *
@@ -34,7 +34,7 @@ class User(Base):
 		db.commit()
 	
 	def joinGame(self, gameId):
-		if self.gameId not is None:
+		if self.gameId is not None:
 			raise AlreadyInGames()
 
 		db.getGame(gameId).addPlayer()
@@ -46,7 +46,7 @@ class User(Base):
 		if self.gameId is None:
 			raise NotInGames()
 
-		db.getGame(gameId).rmPlayer()
+		db.getGame(self.gameId).rmPlayer()
 		
 		self.gameId = None
 		db.commit()
@@ -90,25 +90,25 @@ class Game(Base):
 			raise BadGameName()
 		self.mapId = mapId  
 		self.name = name
-		self.gameStatus = gameStatusWaiting
+		self.gameStatus = self.gameStatusWaiting
 		self.playersInGame = 0
 		self.Description = Description
    
 	def checkGameName(self, name):
 		return 0 < len(name) < 50 or db.query(Game).filter_by(name = name).count() == 0
 
-	def addPlayer(self, user):
-		if self.playersNumber == getMaxPlayersInGame():
+	def addPlayer(self):
+		if self.playersInGame == self.getMaxPlayersInGame():
 				raise TooManyPlayers()
-		if self.gameStatus != gameStatusWaiting
+		if self.gameStatus != self.gameStatusWaiting:
 				raise TooManyPlayers()
-		self.playersNumber += 1
+		self.playersInGame += 1
 		
 	def rmPlayer(self):
-		self.playersNumber -= 1
+		self.playersInGame -= 1
 		
 	def getMaxPlayersInGame(self):
-		return	bd.query(Map).filter_by(id = self.mapId).one().playersNumber
+		return	db.query(Map).filter_by(id = self.mapId).one().playersNumber
 
 	def __repr__(self):#потом подправить форматированый вывод
 		return "<Gake('%s','%s',)>" % (self.name, self.playersNumber)
@@ -150,8 +150,8 @@ class DataBase:
 
 	def getUser(self, sid):
 		try:
-			return self.query(User).filter_by(id = sid).one()
-		except:
+			return self.query(User).filter_by(sid = sid).one()
+		except exc.NoResultFound:
 			raise BadSid()
 
 	def getGame(self, gameId):
@@ -163,7 +163,7 @@ class DataBase:
 	def getMap(selp, mapId):
 		try:
 			return self.query(Map).filter_by(id = mapId).one()
-		except:
+		except sqlalchemy.orm.exc.NoResultFound:
 			return False;
 		
 	def clear(self):
