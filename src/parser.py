@@ -97,7 +97,7 @@ def create_def_maps ():
 	return responded_ok()
 
 def create_game(sid, gameName, mapId, gameDescr=None):
-	if !dbi.checkSid(sid):
+	if not dbi.checkSid(sid):
 		raise BadSid()
 
 	newGame = Game(gameName, mapId, gameDescr)
