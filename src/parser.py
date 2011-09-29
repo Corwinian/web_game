@@ -105,12 +105,8 @@ def create_game(sid, gameName, mapId, gameDescr=None):
 	return responded_ok({"gameId":newGame.id})
 
 def join_game(sid, gameId):
-	if not dbi.checkSid(sid):
-		raise BadSid()
-
-	newGame = Game(gameName, mapId, gameDescr)
-	dbi.add(newGame)
-	return responded_ok({"gameId":newGame.id})
+	dbi.gameUser(sid).joinGame(gameId)
+	return responded_ok()
 
 def get_games_list():
 	try:

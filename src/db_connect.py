@@ -21,7 +21,8 @@ class User(Base):
 	name = Column(String, nullable=False)
 	password = Column(String, nullable=False)
 	sid = Column(String, nullable=True)
-	
+	gameId = Column(Integer, ForeignKey('games.id', onupdate='CASCADE', ondelete='CASCADE'))
+
 	def __init__(self, name, password):
 		super().__init__()
 		self.name = name;
@@ -32,6 +33,15 @@ class User(Base):
 #		db.add(self)
 		db.commit()
 	
+	def	joinGame(self, gameId):
+		if self.gameId not is Null:
+			raise AlreadyInGames()
+
+		db.getGame(gameId).addPlayer()
+		
+		self.gameId = gameId
+		db.commit()
+
 	def __repr__(self):
 		return "<User('%s','%s',)>" % (self.name, self.password)
 
@@ -57,7 +67,12 @@ class Game(Base):
 	name = Column(String, nullable=False)
 #придумать могет сделать inique
 	mapId = Column(Integer, ForeignKey('maps.id', onupdate='CASCADE', ondelete='CASCADE'))
+	playersInGame = Column(Integer, nullable=False)
+	gameStatus = Column(String, nullable=False)
 	Description = Column(String, nullable=True)
+
+	gameStatusWaiting = "waiting the begining"
+
 
 	def __init__(self, name, mapId, Description):
 		if not db.checkMap(mapId):
@@ -66,35 +81,25 @@ class Game(Base):
 			raise BadGameName()
 		self.mapId = mapId  
 		self.name = name
+		self.gameStatus = gameStatusWaiting
+		self.playersInGame = 0
 		self.Description = Description
    
 	def checkGameName(self, name):
 		return 0 < len(name) < 50 or db.query(Game).filter_by(name = name).count() == 0
 
+	def addPlayer(self, user):
+		if self.playersNumber == getMaxPlayersInGame():
+				raise TooManyPlayers()
+		if self.gameStatus != gameStatusWaiting
+				raise TooManyPlayers()
+		self.playersNumber += 1
+		
 	def getMaxPlayersInGame(self):
 		return	bd.query(Map).filter_by(id = self.mapId).one().playersNumber
 
 	def __repr__(self):#потом подправить форматированый вывод
 		return "<Gake('%s','%s',)>" % (self.name, self.playersNumber)
-
-#may be move this to class User
-class Player(Base):
-	__tablename__ = "players"
-	
-	id = Column(Integer, primary_key=True)
-	
-	userId = Column(Integer, ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
-	gameId = Column(Integer, ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
-	
-	def __init__(self, sid, gameId):
-		userId = db.getUser(sid).id
-		gameId = db.getGame(gameId).id		
-	#проверить колическо активных игроков
-#проверить не играет ли щас игрок
-#проверить щас стутус игрыЪЪЪЪ
-		
-	def __repr__(self):
-		return "<Player('%s','%s',)>" % (self.name, self.password)
 
 class DataBase:
 	#потом покуприть мануал и заменить на майскл
