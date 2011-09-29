@@ -71,6 +71,9 @@ class Game(Base):
 	def checkGameName(self, name):
 		return 0 < len(name) < 50 or db.query(Game).filter_by(name = name).count() == 0
 
+	def getMaxPlayersInGame(self):
+		return	bd.query(Map).filter_by(id = self.mapId).one().playersNumper
+
 	def __repr__(self):#потом подправить форматированый вывод
 		return "<Gake('%s','%s',)>" % (self.name, self.playersNumper)
 
