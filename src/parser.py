@@ -118,6 +118,18 @@ def get_games_list():
 	except:
 		raise NotGames() 
 
+def sendMessage(userId, message):
+	try: #потом могет из дб кидать
+		user = dbi.query(User).filter_by(sid = userId).one()
+	except sqlalchemy.orm.exc.NoResultFound:
+		raise BadSid()
+	dbi.add(Chat(userId, message));
+	return	responded_ok();
+
+def getMessages(sinse):
+	dbi.query(Chat).orderby(time)
+	return responded_ok()
+
 def responded_ok(AdditionParams = None):
 	res = {"status":"ok"}
 	if AdditionParams != None:

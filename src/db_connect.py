@@ -113,6 +113,20 @@ class Game(Base):
 	def __repr__(self):#потом подправить форматированый вывод
 		return "<Gake('%s','%s',)>" % (self.name, self.playersNumber)
 
+class Chat(Base):
+	__tablename__ = "chat"
+
+	
+	id = Column(Integer, primary_key=True)
+	user = Column(Integer, nullable=False)
+	message = Column(String, nullable=False)
+	time = Column(DateTime, nullable=False)
+
+	def __init__(self, user, message):
+		self.user = user
+		self.message = message 
+		#а на время я забиол потом сделаю
+
 class DataBase:
 	#потом покуприть мануал и заменить на майскл
 	instance = None
