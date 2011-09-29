@@ -10,12 +10,22 @@ errors = (
 	"badJson", 
 	"badUsername",
 	"badPassword", 
+	"badSid", 
 	"usernameTaken", 
 	"badUsernameOrPassword", 
 	"userLoggedIn",
 	"badMapName",
 	"badPlaersNum",
-	"notMaps"
+	"notMaps",
+	"badMapId",
+	"badGameName",
+	"badGameDescription",
+	"notGames",
+	"badGameState",
+	"alreadyInGame",
+	"tooManyPlayers",
+	"notInGame",
+	"badReadinessStatus",
 )
 
 class RequestException(Exception):

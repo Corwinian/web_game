@@ -96,6 +96,28 @@ def create_def_maps ():
 		dbi.add(Map("defaultMap" + str(i) , i + 1))
 	return responded_ok()
 
+def create_game(sid, gameName, mapId, gameDescr=None):
+	if not dbi.checkSid(sid):
+		raise BadSid()
+
+	newGame = Game(gameName, mapId, gameDescr)
+	dbi.add(newGame)
+	return responded_ok({"gameId":newGame.id})
+
+def join_game(sid, gameId):
+	dbi.getUser(sid).joinGame(gameId)
+	return responded_ok()
+
+def leave_game(sid):
+	dbi.getUser(sid).leaveGame()
+	return responded_ok()
+
+def get_games_list():
+	try:
+		return responded_ok({"gamesList": [game[0] for game in dbi.query(Game.id).all()]})
+	except:
+		raise NotGames() 
+
 def responded_ok(AdditionParams = None):
 	res = {"status":"ok"}
 	if AdditionParams != None:
@@ -107,5 +129,9 @@ actions = {
 				"login": login_user,
 				"logout": logout_user,
 				"uploadMap": upload_map,
-				"getMapsList": get_maps_list
+				"getMapsList": get_maps_list,
+				"createGame":create_game,
+				"getGamesList": get_games_list,
+				"joinGame": join_game,
+				"leaveGame": leave_game,
 }
