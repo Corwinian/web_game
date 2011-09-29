@@ -130,6 +130,7 @@ actions = {
 				"logout": logout_user,
 				"uploadMap": upload_map,
 				"getMapsList": get_maps_list,
+				"createDefaultMaps": create_def_maps,
 				"createGame":create_game,
 				"getGamesList": get_games_list,
 				"joinGame": join_game,
