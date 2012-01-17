@@ -1,0 +1,8 @@
+
+[project]
+name=web_game
+description=
+base_path=./src
+run_cmd=
+regenerate=true
+type=Python
