@@ -4,23 +4,31 @@ import bottle
 import sys
 import parser
 
-DEBUG = True
+import json
+import io
+
 PORT = 8080
-SERVER = '128.0.0.1'
+SERVER = '127.0.0.1'
 
-
-@bottle.route('/')
+@bottle.post('/') 
+#//route('/')
 def serve_ajax():
-	return static_file('test.html')  
+	#return #static_file('test.html')  
+	#data = bottle.request.json()
+	ss = '''<form method="POST">
+                <input name="name"     type="text" />
+                <input name="password" type="password" />
+              </form>'''
+	#return sss + data
+	return bottle.request.body
 
-@bottle.route('/ajax')
+@bottle.post('/ajax') 
 def serve_ajax():
-	if DEBUG: 
-		print("request")
-	return parse_request(request.GET['data'])
+	return parser.parse_request(bottle.request.body.read().decode("utf-8"))
+	
 
 def main():
-	bottle.run(host='127.0.0.1', port=PORT)
+	bottle.run(host=SERVER, port=PORT)
 	return 0
 
 
