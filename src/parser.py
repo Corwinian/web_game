@@ -62,7 +62,7 @@ def login_user(username,password):
 		if user.password != password: 
 			raise BadUsernameOrPassword()
 		user.setSid()
-		return responded_ok({"sid": user.sid})
+		return responded_ok({"sid": user.sid, "userId":user.sid})
 	except sqlalchemy.orm.exc.NoResultFound:
 		raise BadUsernameOrPassword("Wrong username")
 
@@ -138,8 +138,8 @@ def responded_ok(AdditionParams = None):
 
 #TODO: потом доделать
 def reset_server():
-	res = {"result":"ok"}
-	return res
+	dbi.clear()
+	return {"result":"ok"}
 	
 actions = {
 				"register": register_user,

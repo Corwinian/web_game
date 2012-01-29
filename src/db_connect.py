@@ -14,13 +14,15 @@ from config import DB_CONFIG
 
 Base = declarative_base()
 
+
+
 class User(Base):
 	__tablename__ = "users"
 	
 	id = Column(Integer, primary_key=True)
 	name = Column(String, nullable=False)
 	password = Column(String, nullable=False)
-	sid = Column(String, nullable=True)
+	sid = Column(Integer, nullable=True)
 	gameId = Column(Integer, ForeignKey('games.id', onupdate='CASCADE', ondelete='CASCADE'))
 
 	def __init__(self, name, password):
@@ -29,8 +31,9 @@ class User(Base):
 		self.password = password;
 	
 	def setSid(self):
-		self.sid = self.name + self.password
-#		db.add(self)
+		#self.sid = self.name + self.password
+		self.sid = db.lastSid +1
+		db.lastSid = db.lastSid +1
 		db.commit()
 	
 	def joinGame(self, gameId):
@@ -130,7 +133,8 @@ class Chat(Base):
 class DataBase:
 	#потом покуприть мануал и заменить на майскл
 	instance = None
-
+	lastSid = 0
+	
 	def __init__(self):
 		self.db =  create_engine('sqlite:///:memory:', echo=False)
 		Base.metadata.create_all(self.db)
@@ -186,3 +190,4 @@ class DataBase:
 			self.db.execute(table.delete())
 
 db = DataBase()
+
