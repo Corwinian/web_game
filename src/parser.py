@@ -23,7 +23,7 @@ def parse_request(request): #думал написать комплить но �
 
 def do_request(request):
 	try:
-		request = (json.loads(request))
+		request = json.loads(request)
 		if not isinstance(request, dict):
 			raise BadJson("Json must be is object")
 		try:
@@ -131,11 +131,16 @@ def getMessages(sinse):
 	return responded_ok()
 
 def responded_ok(AdditionParams = None):
-	res = {"status":"ok"}
+	res = {"result":"ok"}
 	if AdditionParams != None:
 		res.update(AdditionParams)
 	return res
 
+#TODO: потом доделать
+def reset_server():
+	res = {"result":"ok"}
+	return res
+	
 actions = {
 				"register": register_user,
 				"login": login_user,
@@ -147,4 +152,5 @@ actions = {
 				"getGamesList": get_games_list,
 				"joinGame": join_game,
 				"leaveGame": leave_game,
+				"resetServer": reset_server,
 }

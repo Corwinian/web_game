@@ -1,124 +1,98 @@
 #!/usr/bin/python
-'''
-временно позаимствовал тестер .....
 
-могет кто потом прикрут......
+import unittest
 
-'''
-
-import glob
-import sys
 import os
+import sys
 import json
-import optparse
-import random
+#import misc
+#import actions
+#import db
 
 import config
+
+from config import JSON_DUMPS_FORMAT
 
 config.DEBUG = True
 #common.COMMANDLINE = True
 
 from parser import parse_request
+
 from db_connect import db as dbi
 
-no_answer_count = failed_count = passed_count = 0
+class TestFromFile(unittest.TestCase):
+	def __init__(self, inFile, ansFile):
+		super(TestFromFile, self).__init__()
+		self.inFile = inFile
+		self.ansFile = ansFile
+		self.testDescr = ''
+		self.maxDiff = None
 
-def load_json(filename):
-    find_next = lambda s, pos: json.decoder.WHITESPACE.match(s, pos).end()
-    text = open(filename).read()
-    pos, end = 0, len(text)
-    result = []
-    pos = find_next(text, 0)
-    try:
-        while pos != end:
-            request, pos = json._default_decoder.raw_decode(text, idx=pos)
-            result.append(json.dumps(request))
-            pos = find_next(text, pos)
-    except ValueError:
-        return result + [text[pos:]]
-    return result
+	def tearDown(self):
+		print ("Test %s description: %s\n" % (self.inFile, self.testDescr))
+		#misc.TEST_MODE = False
+	
+	
+		
+	def runTest(self):
+		#misc.LAST_SID = 0
+		#misc.LAST_TIME = 0
+		#misc.TEST_MODE = True
+		f = open(self.ansFile)
+		ans = f.read()
+		out = parseDataFromFile(self.inFile)
+	
+		self.testDescr = out['description']		
+		self.assertListEqual(out['result'], json.loads(ans))
+		
+def parseDataFromFile(fileName):
+	try:
+		file = open(fileName, 'r')
+	except:
+		return 'Cannot open file %s' % fileName
+	description = ''
+	try:
+		object = json.loads(file.read())
+	except (TypeError, ValueError):
+		return {'result': [{"result": "badJson"}], 'description': description}
 
-def error(message):
-    print(message)
-    return 1
+	if not ('test' in object):
+		return {'result': [{'result': 'badTest'}], 'description': description}
 
-def passed():
-    global passed_count
-    passed_count += 1
-    return 'OK'
+	if 'description' in object:
+		description = object['description']
+		#print(description)
+	
+	object = object['test']			
+	result = list()
+	if isinstance(object, list):
+		for obj in object:
+			result.append(json.loads(parse_request(json.dumps(obj, **JSON_DUMPS_FORMAT))))
+	else:
+		result.append(parse_request(object))
+		return {'result': [r1.read()], 'description': description}
 
-def failed():
-    global failed_count
-    failed_count += 1
-    return 'FAIL'
+	return {'result': result, 'description': description}		
 
-def no_answer():
-    global no_answer_count
-    no_answer_count += 1
-    return 'NO ANSWER'
+def suite():
+	suite = unittest.TestSuite()
+	suite.addTests(TestFromFile('%s/test_%d.in' % (testDir, i), '%s/test_%d.ans' % (testDir, i)) for i in range(begin, end))
+	return suite
 
-def compare(testname):
-    if os.path.exists(testname + '.ans'):
-        answer = load_json(testname + '.ans')
-        output = load_json(testname + '.out')
-        return passed() if answer == output else failed()
-    else:
-        return no_answer()
-
-def launch(test, debug=False, verbose=False, interactive=False):
-    random.seed(0)
-    testname = os.path.splitext(os.path.normpath(test))[0]
-    requests = load_json(test)
-    try:
-        oldout = sys.stdout
-        with open(testname + '.out', 'w') as sys.stdout:
-            for request in requests:
-                print(parse_request(request))
-    finally:
-        sys.stdout = oldout
-        dbi.clear()
-
-    result = compare(testname)
-    if result != 'OK' or verbose or debug:
-        print('Test {0} {1}'.format(os.path.normpath(test), result))
-    if debug or (interactive and result != 'OK'):
-        print(open(testname + '.out').read())
-        if interactive and result != 'OK':
-            ans = ""
-            while ans not in ('y', 'yes', 'n', 'no', 'yea', 'nay'):
-                ans = input('Would you like to replace answer with this output?(y/n)').lower()
-            if ans[0] == 'y':
-                os.rename(testname + '.out', testname + '.ans')
-
-def main():
-    parser = optparse.OptionParser(usage='test.py [options] <test(s)>')
-    parser.disable_interspersed_args()
-    boolean_options = {
-        'verbose': 'show successful tests',
-        'debug': 'show tests output (includes --verbose)',
-        'interactive': 'interactively decide what to do with failed tests'
-    }
-    for option, description in boolean_options.items():
-        parser.add_option('-' + option[0], '--' + option, action='store_true', dest=option,
-            default=False, help=description)
-    try:
-        (options, args) = parser.parse_args()
-    except optparse.OptionError as e:
-        return error(e.msg)
-
-    if not len(args):
-        return error(parser.format_help())
-    for arg in args:
-        if not os.path.exists(arg):
-            return error('Path not found: {0}'.format(arg))
-        if os.path.isdir(arg):
-            for dirpath, dirnames, filenames in os.walk(arg):
-                for test in glob.iglob(os.path.join(dirpath, '*.tst')):
-                    launch(test, debug=options.debug, verbose=options.verbose, interactive=options.interactive)
-        else:
-            launch(arg, debug=options.debug, verbose=options.verbose, interactive=options.interactive)
-    print('Summary: {0} passed, {1} failed, {2} no answer'.format(passed_count, failed_count, no_answer_count))
-    return 0
-
-if __name__ == '__main__':
-    sys.exit(main())
+def main(a, b, c):
+	global begin
+	global end
+	global testDir
+	begin = a
+	end = b
+	testDir = c
+	unittest.TextTestRunner().run(suite())
+		
+if __name__=='__main__':
+	argc = len(sys.argv)
+	if argc < 2:			 
+		sys.exit("Format: python TestFromFiles.py [begin] end [directory]")
+	fin = int(sys.argv[1]) if argc == 2 else int(sys.argv[2])
+	start =  int (sys.argv[1]) if argc >= 3 else 0
+	directory = sys.argv[3] if argc == 4 else "../tests/protocol"
+	main(start, fin, directory)
