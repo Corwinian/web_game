@@ -1,0 +1,7 @@
+[{
+		"result": "ok"
+	}, 
+	{"message": "Not Comand",
+		"result": "badAction"
+	}
+]
