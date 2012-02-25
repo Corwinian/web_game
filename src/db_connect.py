@@ -57,7 +57,7 @@ class User(Base):
 	
 	def joinGame(self, gameId):
 		if self.gameId is not None:
-			raise AlreadyInGames()
+			raise AlreadyInGame()
 
 		db.getGame(gameId).addPlayer()
 		
@@ -106,16 +106,21 @@ class Game(Base):
 	def __init__(self, name, mapId, Description):
 		if not db.checkMap(mapId):
 			raise BadMapId()
-		if not self.checkGameName(name):
-			raise BadGameName()
+			
+		self.checkGameName(name)
+		
 		self.mapId = mapId  
 		self.name = name
 		self.gameStatus = self.gameStatusWaiting
 		self.playersInGame = 0
 		self.Description = Description
+		print(self.name)
    
 	def checkGameName(self, name):
-		return 0 < len(name) < 50 or db.query(Game).filter_by(name = name).count() == 0
+		if not 0 < len(name) < 50:
+			raise BadGameName()
+		if not db.query(Game).filter_by(name = name).count() == 0:
+			raise GameNameTaken()
 
 	def addPlayer(self):
 		if self.playersInGame == self.getMaxPlayersInGame():
@@ -176,7 +181,7 @@ class DataBase:
 	def commit(self): 
 		self.session.commit()
 	
-	def rm(self, object):
+	def rm(self, obj):
 		self.session.delete(obj)
 		self.commit()   
 

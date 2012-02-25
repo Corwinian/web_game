@@ -135,12 +135,17 @@ def create_def_maps ():
 		dbi.add(Map("defaultMap" + str(i) , i + 1))
 	return responded_ok()
 
-def create_game(sid, gameName, mapId, gameDescr=None):
-	if not dbi.checkSid(sid):
-		raise BadUserSid()
-
-	newGame = Game(gameName, mapId, gameDescr)
+def create_game(sid, gameName, mapId, gameDescription=None):
+	dbi.checkSid(sid)
+	
+	newGame = Game(gameName, mapId, gameDescription)
 	dbi.add(newGame)
+	
+	try:
+		 join_game(sid, newGame.id)
+	except (RequestException):
+		dbi.rm(newGame)
+		raise AlreadyInGame()  
 	return responded_ok({"gameId":newGame.id})
 
 def join_game(sid, gameId):

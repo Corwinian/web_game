@@ -6,6 +6,7 @@ Created on 11.09.2011
 '''
 
 errors = (
+	"alreadyInGame",
 	"badAction", 
 	"badJson", 
 	"badUsername",
@@ -19,6 +20,7 @@ errors = (
 	"notMaps",
 	"badMapId",
 	"badGameName",
+	"gameNameTaken",
 	"badGameDescription",
 	"notGames",
 	"badGameState",
