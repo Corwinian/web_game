@@ -74,11 +74,10 @@
 			"sid": 1,
 			"gameName": "game1"
 		},
-
 		{
 			"action": "createGame", 
 			"sid": 1,
-			"gameName": "sjkgjskdhjskdsghhhhhhhhhhhhsdgsgdsagjklllllhkhkjhjfsgsdhdfhkhjkhjkhjkhjhkkkkkj",
+			"gameName": "sjkgjskdhjskdsghhhhhhhhhhhhsdgsgdsagjklllllhkhkjhjfsgsdhdfhkhjkhjkhjkhjhkkkkkjdddddddddddddddddddd",
 			"mapId": 1
 		},
 		{
@@ -91,7 +90,7 @@
 			"action": "createGame", 
 			"sid": 2,
 			"gameName": "game1",
-			"mapId": 1
+			"mapId": 2
 		},
 		{
 			"action": "createGame", 
@@ -112,6 +111,7 @@
 			"mapId": 2,
 			"gameDescription": "game description"
 		}
+		
 	], 
 	"description": "test createGame function"
 }
