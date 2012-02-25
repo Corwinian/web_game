@@ -5,7 +5,7 @@
 		"result": "ok"
 	},
 	{
-		"result": "badPlayersNum"
+		"result": "badAction"
 	},
 	{
 		"result": "badMapName"
@@ -14,7 +14,7 @@
 		"result": "badPlayersNum"
 	},
 	{
-		"result": "badPlayersNum"
+		"result": "badAction"
 	},
 	{
 		"result": "badPlayersNum"
@@ -24,11 +24,11 @@
 	},
 	{
 		"result": "ok", 
-		"mapId": 9
+		"mapId": 4
 	},
 	{
 		"result": "ok",
-		"mapId": 10
+		"mapId": 5
 	},
 	{
 		"result": "mapNameTaken"

@@ -82,14 +82,36 @@ class Map(Base):
 	id = pkey()
 	name = string()
 	playersNumber = integer()
+	turnsNum = integer()
+	picture = string()
+	thumbnail = string()
+	#regions
 	
-	def __init__(self, name, playersNumber):
+	def __init__(self, name, playersNumber, turnsNum, regions, picture, thumbnail):
 		super().__init__()
+		checkMapName(name)
+		
+		if 1 > playersNum > 5: 
+			raise BadPlayersNum()
+			
+		if 5 > turnsNum > 10: 
+			raise TurnsNum()
+				
 		self.name = name
 		self.playersNumber = playersNumber
+		self.turnsNum = turnsNum
+		self.picture = picture
+		self.thumbnail = thumbnail
+		
+		
+	def checkMapName(self, name):
+		if 1 > len(mapName) > 15 or not mapName.isprintable():
+			raise BadMapName()
+		if not db.query(Map).filter_by(name = name).count() == 0:
+			raise MapNameTaken()
    
 	def __repr__(self):#потом подправить форматированый вывод
-		return "<User('%s','%s',)>" % (self.name, self.playersNumber)
+		return "<Map('%s','%s',)>" % (self.name, self.playersNumber)
 
 class Game(Base):
 	__tablename__ = "games"

@@ -115,12 +115,9 @@ def get_messages(since, count = 100):
 			for rec in dbi.getMessages(since, count)]
 		})
 		
-def upload_map(mapName, playersNum):
-	if 1 > len(mapName) > 15 or not mapName.isprintable():
-		raise BadMapName()
-	if 1 > playersNum > 5: 
-		raise BadPlayersNum()
-	newMap  = Map(mapName, playersNum)
+def upload_map(mapName, playersNum, turnsNum, regions, picture, thumbnail):
+	
+	newMap = Map(mapName, playersNum)
 	dbi.add(newMap)
 	return responded_ok({"mapId":newMap.id})
 
@@ -130,7 +127,7 @@ def get_maps_list():
 	except:
 		raise NotMaps() 
 
-def create_def_maps ():
+def create_def_maps():
 	for i in range(1, 4):
 		dbi.add(Map("defaultMap" + str(i) , i + 1))
 	return responded_ok()
@@ -142,7 +139,7 @@ def create_game(sid, gameName, mapId, gameDescription=None):
 	dbi.add(newGame)
 	
 	try:
-		 join_game(sid, newGame.id)
+		join_game(sid, newGame.id)
 	except (RequestException):
 		dbi.rm(newGame)
 		raise AlreadyInGame()  
