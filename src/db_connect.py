@@ -5,25 +5,37 @@ Created on 13.09.2011
 '''
 import os
 
+import time
+
 from sqlalchemy import create_engine, Table, Boolean, Enum, Column, Integer, String, MetaData, Date, ForeignKey, DateTime
-from sqlalchemy.orm import sessionmaker, exc
+from sqlalchemy.orm import sessionmaker, exc, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 from errors import *
 from config import DB_CONFIG
+from config import DEBUG
+
+import hashlib
+import datetime
 
 Base = declarative_base()
 
-
+pkey = lambda: Column(Integer, primary_key=True)
+fkey = lambda name: Column(Integer, ForeignKey(name, onupdate='CASCADE', ondelete='CASCADE'))
+string = lambda mayNull=False: Column(String, nullable=mayNull)
+integer = lambda mayNull=False: Column(Integer, nullable=mayNull)
+uniqstring = lambda mayNull=False: Column(String, unique=True, nullable=mayNull)
+utcDT = lambda: Column(DateTime, default=utcnow)
 
 class User(Base):
 	__tablename__ = "users"
 	
-	id = Column(Integer, primary_key=True)
-	name = Column(String, nullable=False)
-	password = Column(String, nullable=False)
-	sid = Column(Integer, nullable=True)
-	gameId = Column(Integer, ForeignKey('games.id', onupdate='CASCADE', ondelete='CASCADE'))
+	id = pkey()
+	name = uniqstring()
+	password = string()
+	sid = integer(True) if DEBUG else string(True)
+	userId = integer(True) if DEBUG else string(True)
+	gameId = fkey('games.id')
 
 	def __init__(self, name, password):
 		super().__init__()
@@ -31,9 +43,16 @@ class User(Base):
 		self.password = password;
 	
 	def setSid(self):
-		#self.sid = self.name + self.password
-		self.sid = db.lastSid +1
-		db.lastSid = db.lastSid +1
+		if DEBUG:
+			self.sid = db.lastSid +1
+			db.lastSid = db.lastSid +1
+		else:
+			seq = str(datetime.datetime.utcnow()) + self.name + self.password
+			self.sid = hashlib.sha1(seq.encode("utf-8")).hexdigest()
+		db.commit()
+	
+	def setUserId(self):
+		self.userId =  self.sid if self.userId == None else self.userId
 		db.commit()
 	
 	def joinGame(self, gameId):
@@ -60,9 +79,9 @@ class User(Base):
 class Map(Base):
 	__tablename__ = "maps"
 	
-	id = Column(Integer, primary_key=True)
-	name = Column(String, nullable=False)
-	playersNumber = Column(Integer, nullable=False)
+	id = pkey()
+	name = string()
+	playersNumber = integer()
 	
 	def __init__(self, name, playersNumber):
 		super().__init__()
@@ -75,16 +94,14 @@ class Map(Base):
 class Game(Base):
 	__tablename__ = "games"
 
-	id = Column(Integer, primary_key=True)
-	name = Column(String, nullable=False)
-#придумать могет сделать inique
-	mapId = Column(Integer, ForeignKey('maps.id', onupdate='CASCADE', ondelete='CASCADE'))
-	playersInGame = Column(Integer, nullable=False)
-	gameStatus = Column(String, nullable=False)
-	Description = Column(String, nullable=True)
+	id = pkey()
+	name = uniqstring() 
+	mapId = fkey('maps.id')
+	playersInGame = integer()
+	gameStatus = string()
+	Description = string(True)
 
 	gameStatusWaiting = "waiting the begining"
-
 
 	def __init__(self, name, mapId, Description):
 		if not db.checkMap(mapId):
@@ -114,26 +131,31 @@ class Game(Base):
 		return	db.query(Map).filter_by(id = self.mapId).one().playersNumber
 
 	def __repr__(self):#потом подправить форматированый вывод
-		return "<Gake('%s','%s',)>" % (self.name, self.playersNumber)
+		return "<Gae('%s','%s',)>" % (self.name, self.playersNumber)
 
 class Chat(Base):
 	__tablename__ = "chat"
-
 	
-	id = Column(Integer, primary_key=True)
-	user = Column(Integer, nullable=False)
-	message = Column(String, nullable=False)
-	time = Column(DateTime, nullable=False)
+	id = pkey()
+	user = fkey('users.sid')
+	message = string()
+	time = integer()
+	
+	senderUser = relationship(User)
+	
+	def generateTimeForTest(self):
+		db.lastTime = db.lastTime +1
+		return db.lastTime
 
 	def __init__(self, user, message):
 		self.user = user
 		self.message = message 
-		#а на время я забиол потом сделаю
+		self.time = math.trunc(time.time()) if not DEBUG else self.generateTimeForTest()
 
 class DataBase:
-	#потом покуприть мануал и заменить на майскл
 	instance = None
 	lastSid = 0
+	lastTime = 0 
 	
 	def __init__(self):
 		self.db =  create_engine('sqlite:///:memory:', echo=False)
@@ -151,17 +173,16 @@ class DataBase:
 	def query(self, *args, **kwargs): 
 		return self.session.query(*args,**kwargs)
 	
-
 	def commit(self): 
 		self.session.commit()
 	
-
 	def rm(self, object):
 		self.session.delete(obj)
 		self.commit()   
 
 	def checkSid(self, sid):
-		return self.query(User).filter_by(sid = sid).count() == 1 
+		if self.query(User).filter_by(sid = sid).count() != 1:
+			raise BadUserSid()
 
 	def checkMap(self, mapId):
 		return self.query(Map).filter_by(id = mapId).count() == 1 
@@ -170,7 +191,10 @@ class DataBase:
 		try:
 			return self.query(User).filter_by(sid = sid).one()
 		except exc.NoResultFound:
-			raise BadSid()
+			raise BadUserSid()
+	
+	def getMessages(self, time, count):
+		return self.query(Chat).filter(Chat.time > time).order_by(Chat.time).all()[-count:]
 
 	def getGame(self, gameId):
 		try:
@@ -185,8 +209,12 @@ class DataBase:
 			return False;
 		
 	def clear(self):
+		if DEBUG:
+			self.lastSid = 0
+			self.lastTime = 0
+		if DEBUG:
+			print("clear sid {0} ".format(self.lastSid))
 		for table in Base.metadata.sorted_tables:
-#проверяем мап id	
 			self.db.execute(table.delete())
 
 db = DataBase()

@@ -7,19 +7,19 @@ import parser
 import json
 import io
 
-PORT = 8080
-SERVER = '127.0.0.1'
+from config import DEBUG
+from config import PORT
+from config import SERVER 
+
+DEBUG = False
 
 @bottle.post('/') 
 #//route('/')
 def serve_ajax():
-	#return #static_file('test.html')  
-	#data = bottle.request.json()
 	ss = '''<form method="POST">
                 <input name="name"     type="text" />
                 <input name="password" type="password" />
               </form>'''
-	#return sss + data
 	return bottle.request.body
 
 @bottle.post('/ajax') 
@@ -30,7 +30,6 @@ def serve_ajax():
 def main():
 	bottle.run(host=SERVER, port=PORT)
 	return 0
-
 
 if __name__ == '__main__':
     sys.exit(main())
