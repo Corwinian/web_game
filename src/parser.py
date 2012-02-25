@@ -41,7 +41,7 @@ def do_request(request):
 			raise BadAction()
 		except (TypeError):
 			if config.DEBUG:
-				print ("cat'n find all params")
+				print ("cat'n find all params ")
 			raise BadAction()
 	except ValueError:
 		raise BadJson('Error in JSON syntaxa') 
@@ -115,9 +115,9 @@ def get_messages(since, count = 100):
 			for rec in dbi.getMessages(since, count)]
 		})
 		
-def upload_map(mapName, playersNum, turnsNum, regions, picture, thumbnail):
+def upload_map(mapName, playersNum, turnsNum, thumbnail, picture, regions):
 	
-	newMap = Map(mapName, playersNum)
+	newMap = Map(mapName, playersNum, turnsNum, thumbnail, picture)
 	dbi.add(newMap)
 	return responded_ok({"mapId":newMap.id})
 
@@ -129,7 +129,7 @@ def get_maps_list():
 
 def create_def_maps():
 	for i in range(1, 4):
-		dbi.add(Map("defaultMap" + str(i) , i + 1))
+		dbi.add(Map("defaultMap" + str(i) , i + 1, i+1))
 	return responded_ok()
 
 def create_game(sid, gameName, mapId, gameDescription=None):

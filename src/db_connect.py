@@ -83,29 +83,31 @@ class Map(Base):
 	name = string()
 	playersNumber = integer()
 	turnsNum = integer()
-	picture = string()
-	thumbnail = string()
+	picture = string(True)
+	thumbnail = string(True)
 	#regions
 	
-	def __init__(self, name, playersNumber, turnsNum, regions, picture, thumbnail):
+	def __init__(self, name, playersNum, turnsNum, regions=None, picture=None, thumbnail=None):
 		super().__init__()
-		checkMapName(name)
+		self.checkMapName(name)
 		
-		if 1 > playersNum > 5: 
+		
+		if not  1 < playersNum < 5: 
 			raise BadPlayersNum()
-			
+				
 		if 5 > turnsNum > 10: 
 			raise TurnsNum()
 				
 		self.name = name
-		self.playersNumber = playersNumber
+		self.playersNumber = playersNum
 		self.turnsNum = turnsNum
 		self.picture = picture
 		self.thumbnail = thumbnail
 		
 		
 	def checkMapName(self, name):
-		if 1 > len(mapName) > 15 or not mapName.isprintable():
+		
+		if not 1 < len(name) < 15 or not name.isprintable():
 			raise BadMapName()
 		if not db.query(Map).filter_by(name = name).count() == 0:
 			raise MapNameTaken()
