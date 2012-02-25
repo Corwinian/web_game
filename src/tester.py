@@ -10,8 +10,6 @@ from config import DEBUG
 from config import JSON_DUMPS_FORMAT
 from parser import parse_request
 
-DEF_DIR = "../tests/"
-
 class TestFromFile(unittest.TestCase):
 	def __init__(self, inFile, ansFile):
 		super(TestFromFile, self).__init__()
@@ -68,7 +66,7 @@ def load_dirs(start_dir):
 	return { dir : load_dirs(dir) for dir in os.listdir(start_dir) if os.path.isdir(dir)}
 
 def help():
-	sys.exit("Format: python TestFromFiles.py [testCategory [[begin] end | [-f road] ")		
+	sys.exit("Format: python TestFromFiles.py [begin] end [testCategory] ")		
 
 def main(a, b, c):
 	global begin
@@ -82,25 +80,12 @@ def main(a, b, c):
 if __name__=='__main__':
 	argc = len(sys.argv)
 	
-	directory =  (DEF_DIR + argv[1] if argc == 2  else DEF_DIR)
+	DEF_DIR = "tests/"
 	
-	if argc <= 2:
-		fin = -1
-		start = 0
-		
-	else if argc == 3:
-		if sys.argv[1][0] != '-':
-			directory = DEF_DIR + argv[1]
-			fin = sys.argv[2]
-		#TODO: add load one file
-		#if sys.argv[1] == '-f':
-		
-	else:
+	if argc < 2:
 		help()
-
-			
-	directory = DEF_DIR + argv[1]
-	fin = int(sys.argv[1]) if argc == 2 else int(sys.argv[2])
-	start =  int (sys.argv[1]) if argc >= 3 else 0
-	directory = "../tests/" + (sys.argv[3] if argc == 4 else "protocol")
+	
+	start =  int (sys.argv[2]) if argc > 3  else 0
+	fin = int(sys.argv[2]) if argc == 3 else int(sys.argv[2])
+	directory = DEF_DIR + (sys.argv[1] if sys.argv[1] != 'rootDir' else '')
 	main(start, fin, directory)
