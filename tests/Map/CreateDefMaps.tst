@@ -1,7 +1,0 @@
-{
-	"action":"createDefaultMaps"
-}
-
-{
-	"action":"getMapsList"
-}
