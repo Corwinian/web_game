@@ -95,7 +95,7 @@ class Map(Base):
 		if not  1 < playersNum < 6: 
 			raise BadPlayersNum()
 				
-		if not 5 < turnsNum < 10: 
+		if not 4 < turnsNum < 11: 
 			raise TurnsNum()
 				
 		self.name = name

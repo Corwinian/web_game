@@ -19,6 +19,7 @@ errors = (
 	"mapNameTaken",
 	"badPlayersNum",
 	"notMaps",
+	"turnsNum",
 	"badMapId",
 	"badGameName",
 	"gameNameTaken",
