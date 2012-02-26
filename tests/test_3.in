@@ -46,7 +46,7 @@
 			"action": "createGame",
 			"sid": 2,
 			"gameName": "game2",
-			"mapId": 5
+			"mapId": 4
 		},
 		{
 			"action": "createGame",

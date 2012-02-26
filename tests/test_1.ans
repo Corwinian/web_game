@@ -24,11 +24,11 @@
 	},
 	{
 		"result": "ok", 
-		"mapId": 5
+		"mapId": 8
 	},
 	{
 		"result": "ok",
-		"mapId": 6
+		"mapId": 9
 	},
 	{
 		"result": "mapNameTaken"

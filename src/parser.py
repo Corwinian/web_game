@@ -115,7 +115,7 @@ def get_messages(since, count = 100):
 			for rec in dbi.getMessages(since, count)]
 		})
 		
-def upload_map(mapName, playersNum, turnsNum, thumbnail, picture, regions):
+def upload_map(mapName, playersNum, turnsNum, thumbnail=None, picture=None, regions =None ):
 	
 	newMap = Map(mapName, playersNum, turnsNum, thumbnail, picture)
 	dbi.add(newMap)
@@ -128,8 +128,8 @@ def get_maps_list():
 		raise NotMaps() 
 
 def create_def_maps():
-	for i in range(1, 5):
-		dbi.add(Map("defaultMap" + str(i) , i + 1, i+5))
+	for newMap in config.DEFAULT_MAPS:
+		upload_map(**newMap)
 	return responded_ok()
 
 def create_game(sid, gameName, mapId, gameDescription=None):
