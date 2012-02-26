@@ -66,7 +66,7 @@ class User(Base):
 
 	def leaveGame(self):
 		if self.gameId is None:
-			raise NotInGames()
+			raise NotInGame()
 
 		db.getGame(self.gameId).rmPlayer()
 		
@@ -92,10 +92,10 @@ class Map(Base):
 		self.checkMapName(name)
 		
 		
-		if not  1 < playersNum < 5: 
+		if not  1 < playersNum < 6: 
 			raise BadPlayersNum()
 				
-		if 5 > turnsNum > 10: 
+		if not 5 < turnsNum < 10: 
 			raise TurnsNum()
 				
 		self.name = name
@@ -113,7 +113,7 @@ class Map(Base):
 			raise MapNameTaken()
    
 	def __repr__(self):#потом подправить форматированый вывод
-		return "<Map('%s','%s',)>" % (self.name, self.playersNumber)
+		return "<Map('%s', players Num'%s', turns Num'%s')>" % (self.name, self.playersNumber, self.turnsNum)
 
 class Game(Base):
 	__tablename__ = "games"
@@ -126,6 +126,7 @@ class Game(Base):
 	Description = string(True)
 
 	gameStatusWaiting = "waiting the begining"
+	gameStatusEnd = "game finished"
 
 	def __init__(self, name, mapId, Description):
 		if not db.checkMap(mapId):
@@ -150,11 +151,13 @@ class Game(Base):
 		if self.playersInGame == self.getMaxPlayersInGame():
 				raise TooManyPlayers()
 		if self.gameStatus != self.gameStatusWaiting:
-				raise TooManyPlayers()
+				raise BadGameState()
 		self.playersInGame += 1
 		
 	def rmPlayer(self):
 		self.playersInGame -= 1
+		if self.playersInGame == 0:
+			self.gameStatus = self.gameStatusEnd
 		
 	def getMaxPlayersInGame(self):
 		return	db.query(Map).filter_by(id = self.mapId).one().playersNumber

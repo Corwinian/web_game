@@ -128,8 +128,8 @@ def get_maps_list():
 		raise NotMaps() 
 
 def create_def_maps():
-	for i in range(1, 4):
-		dbi.add(Map("defaultMap" + str(i) , i + 1, i+1))
+	for i in range(1, 5):
+		dbi.add(Map("defaultMap" + str(i) , i + 1, i+5))
 	return responded_ok()
 
 def create_game(sid, gameName, mapId, gameDescription=None):

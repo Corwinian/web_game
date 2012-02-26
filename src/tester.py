@@ -86,6 +86,6 @@ if __name__=='__main__':
 		help()
 	
 	start =  int (sys.argv[2]) if argc > 3  else 0
-	fin = int(sys.argv[2]) if argc == 3 else int(sys.argv[2])
+	fin = int(sys.argv[2]) if argc == 3 else int(sys.argv[3])
 	directory = DEF_DIR + (sys.argv[1] if sys.argv[1] != 'rootDir' else '')
 	main(start, fin, directory)
