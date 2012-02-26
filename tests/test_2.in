@@ -63,7 +63,7 @@
 			"action": "createGame",
 			"gameName": "game2",
 			"sid": 1,
-			"mapId": 5
+			"mapId": 4
 		},
 		{
 			"action": "joinGame",
