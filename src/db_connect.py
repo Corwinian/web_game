@@ -24,6 +24,7 @@ pkey = lambda: Column(Integer, primary_key=True)
 fkey = lambda name: Column(Integer, ForeignKey(name, onupdate='CASCADE', ondelete='CASCADE'))
 string = lambda mayNull=False: Column(String, nullable=mayNull)
 integer = lambda mayNull=False: Column(Integer, nullable=mayNull)
+bool = lambda isTrue=False: Column(Boolean, default=isTrue)
 uniqstring = lambda mayNull=False: Column(String, unique=True, nullable=mayNull)
 utcDT = lambda: Column(DateTime, default=utcnow)
 
@@ -115,6 +116,36 @@ class Map(Base):
 	def __repr__(self):#потом подправить форматированый вывод
 		return "<Map('%s', players Num'%s', turns Num'%s')>" % (self.name, self.playersNumber, self.turnsNum)
 
+
+class Region(Base):
+	__tablename__ = "regions"
+	
+	id = pkey()
+	mapId = Column(Integer, ForeignKey('maps.id', onupdate='CASCADE', ondelete='CASCADE'),  primary_key=True)
+	
+	population = integer(True)
+	
+	#характеристики региона
+	border = bool()
+	coast = bool()
+	mountain = bool()
+	sea = bool()
+	mine = bool()
+	farmland = bool()
+	magic = bool()
+	forest = bool()
+	hill = bool()
+	swamp = bool()
+	 
+	
+	def __init__(self, mapId, landDescription, adjacent, population=None):
+		self.mapId = mapId
+		
+	
+	def __repr__(self):
+		return "<Region(Map '%s', region '%s', adj'%s')>" % (self.mapId, self.regionNum, self.regionAdj)	
+	
+	
 class Game(Base):
 	__tablename__ = "games"
 
