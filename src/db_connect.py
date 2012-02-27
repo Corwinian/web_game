@@ -144,7 +144,21 @@ class Region(Base):
 	
 	def __repr__(self):
 		return "<Region(Map '%s', region '%s', adj'%s')>" % (self.mapId, self.regionNum, self.regionAdj)	
+
+class RegionAdj(Base):
+	__tablename__ = "region_adjacents"
 	
+	mapId = Column(Integer, ForeignKey('maps.id', onupdate='CASCADE', ondelete='CASCADE'),  primary_key=True)
+	regionNum = Column(Integer, ForeignKey('regions.id', onupdate='CASCADE', ondelete='CASCADE'),  primary_key=True)
+	regionAdj = pkey()
+	
+	def __init__(self, mapId, regionNum, regionAdj):
+		self.mapId = mapId
+		self.regionNum = regionNum  
+		self.regionAdj = regionAdj
+		
+	def __repr__(self):
+		return "<RegionAdj(Map '%s', region '%s', adj'%s')>" % (self.mapId, self.regionNum, self.regionAdj)	
 	
 class Game(Base):
 	__tablename__ = "games"
