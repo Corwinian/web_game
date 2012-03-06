@@ -138,8 +138,13 @@ class Region(Base):
 	swamp = bool()
 	 
 	
-	def __init__(self, mapId, landDescription, adjacent, population=None):
+	def __init__(self, mapId, regNum, landDescription, adjacents, population=None):
 		self.mapId = mapId
+		self.id = regNum
+		self.population = population
+		
+		for adj in adjacents:
+			dbi.add(regionAdj(mapId, regionNum, adj))
 		
 	
 	def __repr__(self):
