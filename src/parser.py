@@ -27,13 +27,18 @@ def parse_request(request): #думал написать комплить но �
 
 def do_request(request):
 	try:
-		request = json.loads(request)
+		if config.DEBUG:
+			print (request);
 		if not isinstance(request, dict):
 			raise BadJson("Json must be is object")
 		try:
 			if "action" not in request.keys():
 				raise BadAction("Not Comand")
-			return actions[request.pop("action")](**request)
+
+			res = actions[request.pop("action")](**request)
+			if config.DEBUG:
+				print("res = {0}".format(res))
+			return res
 		except (KeyError):
 			if config.DEBUG:
 				if "getMessages" not in actions.keys():
@@ -44,7 +49,7 @@ def do_request(request):
 				print ("cat'n find all params ")
 			raise BadAction()
 	except ValueError:
-		raise BadJson('Error in JSON syntaxa') 
+		raise BadJson('Error in JSON syntax') 
 
 def responded_ok(AdditionParams = None):
 	res = {"result":"ok"}
