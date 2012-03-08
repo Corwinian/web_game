@@ -1,0 +1,412 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"E",
+				"ENDBRAKE"
+			],
+			[
+				"St",
+				"START"
+			],
+			[
+				"b",
+				"body"
+			],
+			[
+				"he",
+				"heappop"
+			],
+			[
+				"co",
+				"count"
+			],
+			[
+				"c",
+				"count"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "main.html",
+			"settings":
+			{
+				"buffer_size": 1277,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/main.js",
+			"settings":
+			{
+				"buffer_size": 2982,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
+			"settings":
+			{
+				"buffer_size": 30461,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/ai.js",
+			"settings":
+			{
+				"buffer_size": 298,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "style.css",
+			"settings":
+			{
+				"buffer_size": 2918,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 221.0,
+		"selected_items":
+		[
+			[
+				"git:st",
+				"Git: Status"
+			],
+			[
+				"git:lo",
+				"Git: Log All"
+			],
+			[
+				"git:co",
+				"Git: Commit"
+			],
+			[
+				"git:add",
+				"Git: Add Current File"
+			],
+			[
+				"Git",
+				"Git: Blame"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: g",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 593.0
+	},
+	"console":
+	{
+		"height": 132.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/User/Default (Linux).sublime-keymap",
+		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Default/Preferences.sublime-settings",
+		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/User/Preferences.sublime-settings",
+		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/User/Package Control.sublime-settings",
+		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Alignment/Base File.sublime-settings",
+		"/home/corwin/Dropbox/Учеба/web_game/client/js/utils.js",
+		"/home/corwin/Dropbox/Учеба/web_game/client/web_client",
+		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
+		"/home/corwin/Dropbox/Учеба/web_game/client/js/game.js",
+		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Default/Global.sublime-settings",
+		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/TodoManager/TodoManager.sublime-settings",
+		"/home/corwin/Dropbox/Учеба/Курсовик/project/GribToNetCDFConvertor/src/gribtonetcdfconvertor/RomsTopLavel.java",
+		"/home/corwin/Dropbox/Учеба/Moroz2/moroz2.sublime-project",
+		"/home/corwin/Dropbox/Учеба/Moroz2/parser.py",
+		"/home/corwin/Dropbox/Учеба/web_game/client/main.html",
+		"/home/corwin/workspace/web_game/client/js/ai.js",
+		"/home/corwin/workspace/web_game/client/js/game.js",
+		"/home/corwin/workspace/web_game/client/js/main.js",
+		"/home/corwin/workspace/web_game/client/js/utils.js",
+		"/home/corwin/workspace/web_game/client/style.css",
+		"/home/corwin/workspace/web_game/client/main.html",
+		"/home/corwin/workspace/web_game/client/main.html_",
+		"/home/corwin/workspace/web_game/others/kravits_game/client/main.html",
+		"/home/corwin/Dropbox/Учеба/web_game/client/js/main.js",
+		"/home/corwin/workspace/web_game/others/kravits_game/client/js/main.js",
+		"/home/corwin/workspace/web_game/others/kravits_game/client/css/black-tie/jquery-ui-1.8.6.custom.css",
+		"/home/corwin/workspace/web_game/others/web_game/server/actions.py",
+		"/home/corwin/Dropbox/Учеба/Moroz2/rle.py",
+		"/home/corwin/Dropbox/Учеба/Moroz2/hafman.py",
+		"/home/corwin/Dropbox/Учеба/Moroz2/lzw.py",
+		"/home/corwin/Dropbox/Учеба/web_game/src/server.py"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"start",
+			"star\n",
+			"start\n",
+			"stat\n",
+			"star",
+			"    ",
+			"ctrl+`"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"	"
+		],
+		"reverse": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "main.html",
+					"settings":
+					{
+						"buffer_size": 1277,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								626,
+								626
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 15.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "js/main.js",
+					"settings":
+					{
+						"buffer_size": 2982,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2338,
+								2338
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1194.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
+					"settings":
+					{
+						"buffer_size": 30461,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9961,
+								9961
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2682.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "js/ai.js",
+					"settings":
+					{
+						"buffer_size": 298,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "style.css",
+					"settings":
+					{
+						"buffer_size": 2918,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								796,
+								796
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 736.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 32.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"main.html"
+			],
+			[
+				"install",
+				"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Default/Global.sublime-settings"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 161.0,
+	"status_bar_visible": true
+}

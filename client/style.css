@@ -1,0 +1,180 @@
+/* Universal reset: */
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Tell the browser to render HTML 5 elements as block */
+header, section, nav, footer {
+    display: block;
+}
+
+/* Change cursor in AJAX requests */
+html.busy, html.busy * {
+    cursor: wait !important;
+}
+
+body {
+    line-height: 1.5em;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+}
+
+header {
+    width: 100%;
+    height: 172px;
+    margin: 0 auto;
+    background: url(images/header_repeat.jpg) repeat-x;
+}
+
+header p {
+    width: 920px;
+    height: 102px;
+    margin: 0 auto;
+    padding-top: 70px;
+    color: #fff;
+    font-size: 40px;
+    text-align: center;
+    background: url(images/header_banner.jpg) no-repeat;
+}
+
+#menu {
+    width: 100%;
+    height: 45px;
+    margin: -10px auto 0px auto;
+    background: url(images/menu_repeat.jpg) repeat-x;
+}
+
+#menu li {
+    float: right;
+    padding: 7px 30px 7px 30px;
+    margin: 0 5px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #BBB;
+}
+
+#menu #current-user {
+    float: left;
+    color: #ffdb83;
+}
+
+#menu li.menu-link:hover {
+    background: #666;
+    color: #FFF;
+    cursor: pointer;
+}
+
+#content {
+    width: 980px;
+    height: 450px;
+    margin: 0 auto;
+    padding: 40px 10px 20px 0;
+}
+
+nav {
+    float: left;
+    position: relative;
+    padding-left: 5px;
+    width: 220px;
+    margin-right: 10px;
+}
+
+nav p {
+    display: block;
+    width: 150px;
+    padding: 5px 18px;
+    margin-bottom: 5px;
+    color: #999;
+    background: #222 url(images/tab_bg.jpg) repeat-y;
+    border: 1px solid #1a1a1a;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav p:hover {
+    color: #ffdb83;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+nav p.nav-current {
+    color: #ffdb83;
+    text-decoration: underline;
+}
+
+nav p.nav-current:hover {
+    cursor: default;
+}
+
+#nav-vertical-line {
+    width: 1px;
+    height: 165px;
+    background-color: #000;
+    overflow: hidden;
+    float: left;
+}
+
+td a {
+    color: #dc5616;
+    text-decoration: none;
+}
+
+td a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    clear: both;
+    width: 100%;
+    background: url(images/footer_repeat.jpg) repeat-x;
+}
+
+footer p {
+    width: 920px;
+    height: 40px;
+    padding-top: 5px;
+    margin: 0 auto;
+    text-align: center;
+    background: url(images/footer_banner.jpg) no-repeat;
+    color: #fff;
+}
+
+/* Forms */
+
+form .error {
+    width: 100%;
+    padding: 5px;
+    margin: 5px auto;
+    color: #D8000C;
+    font-size: 12px;
+    background-color: #FFBABA;
+    text-align: center;
+}
+
+form .error img {
+    vertical-align: top;
+    padding: 3px;
+}
+
+/* Sections */
+
+#registration {
+    width: 350px;
+    margin: 0 auto;
+}
+
+#registration form input[type="text"],
+#registration form input[type="password"] {
+    width: 100%;
+    padding: 5px 0px 5px 5px;
+    margin: 2px 0px 15px 0px;
+}
+
+#registration form input[type="submit"] {
+    display: block;
+    margin: 0 auto;
+}
+

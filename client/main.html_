@@ -3,21 +3,13 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Tactical turn-based game</title>
-	<link href="style.css" rel="stylesheet" type="text/css">
-	<!--<link href="css/black-tie/jquery-ui-1.8.6.custom.css" rel="stylesheet" type="text/css"> -->
-
+	<title>Small words</title>
+	<link href="style.css" rel="stylesheet" type="text/css">	
 	<script type="text/javascript" src="js/lib/jquery-1.4.4.min.js"></script>
-	<script type="text/javascript" src="js/lib/jquery-ui-1.8.6.custom.min.js"></script>
-	<script type="text/javascript" src="js/lib/jquery.inherit.js"></script>
 
- 
-	<script type="text/javascript" src="js/main.js"></script>   
-	<script type="text/javascript" src="js/utils.js"></script>
-	
- 
-   
-</head>
+	<script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/ai.js"></script>
+	</head>
 
 <body>
 	<header>
@@ -27,9 +19,12 @@
 	<ul id="menu">
 		<li id="current-user"></li>
 		<li id="sign-out" class="menu-link">Sign out</li>
+		<li id="leave-game" class="menu-link">Leave game</li>
+		<li id="current-game"></li>
 	</ul>
 
 	<section id="content">
+
 		<section id="registration">
 			<form name="registration" action="/" method="post">
 				<label for="registration-username">Username</label>
@@ -41,6 +36,23 @@
 				<input type="submit" value="Register">
 			</form>
 		</section>
+			
+		<nav>
+			<p id="nav-create-game">Create game</p>
+			<p id="nav-active-games">Active games</p>		  
+		</nav>
+		<div id="nav-vertical-line"></div>
+            
+		<section id="lobby">
+			<section id="chat">
+				<div id ="chat-window"></div>
+				<form name="send-message">
+					<input type="text" id="send-message-text" name="text"/>
+					<input type="submit" value="Send" />
+				</form>
+			</section>
+		</section>
+		
 	</section>
 </body>
 </html>
