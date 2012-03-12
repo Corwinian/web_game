@@ -86,6 +86,22 @@ function describeSections()
   }
 }
 
+function initHorzMenu()
+{
+	$("#sign-out").click(function()
+	{
+		sendRequest({ action :'unregister' }, function (json)
+		{
+			sessionStorage.clear();
+	        showSection('registration');
+		});
+	});
+	$("#login").click(function()
+	{
+		showSection('login');
+	});
+}
+
 function submitForm(form, handler, grabber, command)
 {
   function formError(form, text)
@@ -163,7 +179,7 @@ function clearForm(form)
 $(document).ready(function()
 {
   //initNavigation();
-  //initHorzMenu();
+  initHorzMenu();
   initBinds();
 
   $('input:submit, a.button').button();

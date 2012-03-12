@@ -27,19 +27,39 @@
 	<ul id="menu">
 		<li id="current-user"></li>
 		<li id="sign-out" class="menu-link">Sign out</li>
+		<li id="login" class="menu-link">Login </li>
 	</ul>
 
 	<section id="content">
 		<section id="registration">
-			<form name="registration" action="/" method="post">
-				<label for="registration-username">Username</label>
-				<input type="text" id="registration-username" name="username">
+		<table>
+			<tr>
+			<td>
+				<form name="registration" action="/" method="post">
+					<center>Регистрация</center><br/>
+					<label for="registration-username">Username</label>
+					<input type="text" id="registration-username" name="username">
 
-				<label for="registration-password">Password</label>
-				<input type="password" id="registration-password" name="password">
+					<label for="registration-password">Password</label>
+					<input type="password" id="registration-password" name="password">
 
-				<input type="submit" value="Register">
-			</form>
+					<input type="submit" value="Register">
+				</form>
+			</td>
+			<td>
+				<form name="login" action="/" method="post">
+					<center>Авториторизация</center><br/>
+					<label for="login-username">Username</label>
+					<input type="text" id="login-username" name="username">
+
+					<label for="login-password">Password</label>
+					<input type="password" id="login-password" name="password">
+
+					<input type="submit" value="Login">
+				</form>
+			</td>
+			</tr>
+		</table>
 		</section>
 	</section>
 </body>
