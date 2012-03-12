@@ -83,6 +83,7 @@ function describeSections()
 {
   sections = {
     'registration': new Section('registration'),
+    'login': new Section('login'),
   }
 }
 
@@ -95,10 +96,6 @@ function initHorzMenu()
 			sessionStorage.clear();
 	        showSection('registration');
 		});
-	});
-	$("#login").click(function()
-	{
-		showSection('login');
 	});
 }
 
@@ -131,6 +128,7 @@ function submitForm(form, handler, grabber, command)
   var data = grabber ? grabber(form): grabForm(form);
   var commands = {
     'registration': function() { return { action: 'register' }; },
+    'login': function() { return { action: 'login' }; },
     //'registration': function() { return { action: 'login' }; },
   }
   command = command || commands[form.attr('name')]();
@@ -152,6 +150,23 @@ function initBinds()
 {
   // Registration
   $('form[name="registration"]').submit(function()
+  {
+    return submitForm($(this), function(json, data)
+      {
+        if(sessionStorage.length && sessionStorage.username == data.username &&
+          inGame())
+        {
+          showSection('lobby');
+          return;
+        }
+        sessionStorage.clear();
+        sessionStorage.sid = json.sid;
+        sessionStorage.username = data.username;
+        showSection('active-games');
+      }
+    );
+  });
+  $('form[name="login"]').submit(function()
   {
     return submitForm($(this), function(json, data)
       {
