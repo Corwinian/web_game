@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 
 <html>
-<head>
+	InsertTabWrapper()"Показываем все полезные опции автокомплита сразу=IMAP_Jumpfunc('', 0)
+	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Tactical turn-based game</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
@@ -27,39 +28,33 @@
 	<ul id="menu">
 		<li id="current-user"></li>
 		<li id="sign-out" class="menu-link">Sign out</li>
-		<li id="login" class="menu-link">Login </li>
+		<li id="reg_window" class="menu-link">Registration</li>
 	</ul>
 
 	<section id="content">
 		<section id="registration">
-		<table>
-			<tr>
-			<td>
-				<form name="registration" action="/" method="post">
-					<center>Регистрация</center><br/>
-					<label for="registration-username">Username</label>
-					<input type="text" id="registration-username" name="username">
+			<form name="registration" action="/" method="post">
+				<center>Registration</center><br/>
+				<label for="registration-username">Username</label>
+				<input type="text" id="registration-username" name="username">
 
-					<label for="registration-password">Password</label>
-					<input type="password" id="registration-password" name="password">
+				<label for="registration-password">Password</label>
+				<input type="password" id="registration-password" name="password">
 
-					<input type="submit" value="Register">
-				</form>
-			</td>
-			<td>
-				<form name="login" action="/" method="post">
-					<center>Авториторизация</center><br/>
-					<label for="login-username">Username</label>
-					<input type="text" id="login-username" name="username">
+				<input type="submit" value="Register">
+			</form>
+		</section>
+		<section id="autorisation">
+			<form name="autorisation" action="/" method="post" id=auth>
+				<center>Autorisation</center><br/>
+				<label for="login-username">Username</label>
+				<input type="text" id="login-username" name="username">
 
-					<label for="login-password">Password</label>
-					<input type="password" id="login-password" name="password">
+				<label for="login-password">Password</label>
+				<input type="password" id="login-password" name="password">
 
-					<input type="submit" value="Login">
-				</form>
-			</td>
-			</tr>
-		</table>
+				<input type="submit" value="Login">
+			</form>
 		</section>
 	</section>
 </body>

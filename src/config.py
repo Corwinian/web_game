@@ -7,7 +7,7 @@ Created on 13.09.2011
 global DEBUG
 DEBUG = True
 
-PORT = 8080
+PORT = 8081
 SERVER = '127.0.0.1'
 
 JSON_DUMPS_FORMAT = {

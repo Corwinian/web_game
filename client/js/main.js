@@ -3,88 +3,91 @@ window.onhashchange = innerShowSection;
 
 function sendNonAuthorizedRequest(data, handler, error_handler)
 {
-  $.getJSON('/ajax',  { data: JSON.stringify(data) }, function (json)  
-  //$.post('/', { data: JSON.stringify(data) }, function (json)  
-  {
-    json.result== 'ok' ? handler(json) : (error_handler || alert)(json.result);
-//    json.result== 'ok' ? handler(json) : (error_handler || alert)(json.message, json.result);
-  });
+	$.getJSON('/ajax',	{ data: JSON.stringify(data) }, function (json)	
+	{
+		//пока так потом сделать нормально, что в хэндлер можно было передать сообщение
+		json.result== 'ok' ? handler(json, data.action == "register" ? "regitation ok" : '' )
+			: (error_handler || alert)(false, json.result);
+	});
 }
 
 function sendRequest(data, handler, error_handler)
 {
-  sendNonAuthorizedRequest($.extend(data, { sid: sessionStorage.sid }),
-    handler, error_handler);
+	sendNonAuthorizedRequest($.extend(data, { sid: sessionStorage.sid }),
+		handler, error_handler);
 }
 
 function showCurrentUser(prefix)
 {
-  $("#current-user").html(prefix + sessionStorage.username);
+	$("#current-user").html(prefix + sessionStorage.username);
 }
 
 function showSection(name)
 {
-  if (getCurrentSectionName() == name)
-  {
-    innerShowSection();
-    return;
-  }
-  window.location.hash = name;
+	if (getCurrentSectionName() == name)
+	{
+		innerShowSection();
+		return;
+	}
+	window.location.hash = name;
 }
 
 function getCurrentSectionName()
 {
-  return window.location.hash.substr(1); // remove # symbol
+	return window.location.hash.substr(1); // remove # symbol
 }
 
 function innerShowSection()
 {
-  var section = getCurrentSectionName();
-  if (!section || !(section in sections))
-  {
-    window.location.hash = "registration";
-    return;
-  }
-  sections[section].show();
+	var section = getCurrentSectionName();
+	if (!section || !(section in sections))
+	{
+		window.location.hash = "autorisation";
+		return;
+	}
+	sections[section].show();
 }
 
 Section = $.inherit(
-  {
-    __constructor: function(name)
-    {
-      this.name = name
-    },
-    show: function()
-    {
-      $('#content > *, #menu, #menu > li').hide();
-      $('#' + this.name).show();
-    }
-  }
+	{
+		__constructor: function(name)
+		{
+			this.name = name
+		},
+		show: function()
+		{
+			$('#content > *, #menu, #menu > li').hide();
+			$('#' + this.name).show();
+
+			if (this.name == "registration" || this.name == "autorisation")
+			{ $('#menu, #menu li[id="reg_window"]').show();}
+		}
+	}
 );
 
 SectionWithNavigation = $.inherit(
-  Section,
-  {
-    show: function ()
-    {
-      this.__base();
-      $('nav > p').removeClass('nav-current');
-      $('#nav-' + this.name).addClass('nav-current');
+	Section,
+	{
+		show: function ()
+		{
+			this.__base();
+			$('nav > p').removeClass('nav-current');
+			$('#nav-' + this.name).addClass('nav-current');
 
-      showCurrentUser('<i>Welcome</i>, ');
+			showCurrentUser('<i>Welcome</i>, ');
 
-      $('#menu, #menu li[id!="leave-game"], nav, #nav-vertical-line').show();
-    }
-  }
+			$('#menu, #menu li[id!="leave-game"], nav, #nav-vertical-line').show();
+		}
+	}
 );
 
 
 function describeSections()
 {
-  sections = {
-    'registration': new Section('registration'),
-    'login': new Section('login'),
-  }
+	sections = {
+		'registration': new Section('registration'),
+		'autorisation': new Section('autorisation'),
+	}
 }
 
 function initHorzMenu()
@@ -94,113 +97,121 @@ function initHorzMenu()
 		sendRequest({ action :'unregister' }, function (json)
 		{
 			sessionStorage.clear();
-	        showSection('registration');
+			showSection('autorisation');
 		});
 	});
+
+	$("#reg_window").click(function() {	showSection('registration');});
 }
 
 function submitForm(form, handler, grabber, command)
 {
-  function formError(form, text)
-  {
-    $('.error', form).remove();
-    form.prepend(
-      $('<p/>', {class: 'error ui-corner-all'})
-      .append($('<img/>', { src: '/images/error.png' }))
-      .append(text)
-    );
-  }
+	function formError(form, text)
+	{
+		$('.error', form).remove();
+		$('.good', form).remove();
+		form.prepend(
+			$('<p/>', {class: 'error ui-corner-all'})
+			.append($('<img/>', { src: '/images/error.png' }))
+			.append(text)
+		);
+	}
 
-  function grabForm(form)
-  {
-    var obj = {};
-    $("input[type!='submit'], textarea", form).each(function(i, v)
-    {
-      obj[$(v).attr('name')] = $(v).hasClass('int-value') ? parseInt($(v).val()) : $(v).val();
-    });
-    $("select", form).each(function(i, v)
-    {
-      obj[$(v).attr('name')] = $(':selected', v).text();
-    });
-    return obj;
-  }
+	function formGood(form, text)
+	{
+		$('.error', form).remove();
+		$('.good', form).remove();
+		form.prepend(
+			$('<p/>', {class: 'good ui-corner-all'})
+			.append($('<img/>', { src: '/images/good.png' }))
+			.append(text)
+		);
+	}
 
-  var data = grabber ? grabber(form): grabForm(form);
-  var commands = {
-    'registration': function() { return { action: 'register' }; },
-    'login': function() { return { action: 'login' }; },
-    //'registration': function() { return { action: 'login' }; },
-  }
-  command = command || commands[form.attr('name')]();
-  if (command.action == 'register' || command.action == 'login')
-    requestFunc = sendNonAuthorizedRequest;
-  else
-    requestFunc = sendRequest;
+	function grabForm(form)
+	{
+		var obj = {};
+		$("input[type!='submit'], textarea", form).each(function(i, v)
+		{
+			obj[$(v).attr('name')] = $(v).hasClass('int-value') ? parseInt($(v).val()) : $(v).val();
+		});
+		$("select", form).each(function(i, v)
+		{
+			obj[$(v).attr('name')] = $(':selected', v).text();
+		});
+		return obj;
+	}
 
-  requestFunc(
-    $.extend(data, command),
-    function (json) { handler(json, data); clearForm(form); },
-    function (message) { formError(form, message); }
-  );
+	var data = grabber ? grabber(form): grabForm(form);
+	var commands = {
+		'registration': function() { return { action: 'register' }; },
+		'autorisation': function() { return { action: 'autorisation' }; },
+	}
+	command = command || commands[form.attr('name')]();
+	if (command.action == 'register' || command.action == 'autorisation')
+		requestFunc = sendNonAuthorizedRequest;
+	else
+		requestFunc = sendRequest;
 
-  return false; // ban POST requests
+	requestFunc(
+		$.extend(data, command),
+		function (json, message) 
+		{
+			handler(json, data); clearForm(form); 
+			if (message != ''){	formGood($('form[name="autorisation"]'),message);}
+		},
+		function (message) { formError(form, message); }
+	);
+
+	return false; // ban POST requests
 }
 
 function initBinds()
 {
-  // Registration
-  $('form[name="registration"]').submit(function()
-  {
-    return submitForm($(this), function(json, data)
-      {
-        if(sessionStorage.length && sessionStorage.username == data.username &&
-          inGame())
-        {
-          showSection('lobby');
-          return;
-        }
-        sessionStorage.clear();
-        sessionStorage.sid = json.sid;
-        sessionStorage.username = data.username;
-        showSection('active-games');
-      }
-    );
-  });
-  $('form[name="login"]').submit(function()
-  {
-    return submitForm($(this), function(json, data)
-      {
-        if(sessionStorage.length && sessionStorage.username == data.username &&
-          inGame())
-        {
-          showSection('lobby');
-          return;
-        }
-        sessionStorage.clear();
-        sessionStorage.sid = json.sid;
-        sessionStorage.username = data.username;
-        showSection('active-games');
-      }
-    );
-  });
+	// Registration
+	$('form[name="registration"]').submit(function()
+	{
+		return submitForm($(this), function(json, data)
+			{
+				showSection('autorisation');
+			}
+		);
+	});
+	$('form[name="autorisation"]').submit(function()
+	{
+		return submitForm($(this), function(json, data)
+			{
+				if(sessionStorage.length && sessionStorage.username == data.username &&
+					inGame())
+				{
+					showSection('lobby');
+					return;
+				}
+				sessionStorage.clear();
+				sessionStorage.sid = json.sid;
+				sessionStorage.username = data.username;
+				showSection('active-games');
+			}
+		);
+	});
 }
 
 function clearForm(form)
 {
-  $('.error', form).remove();
-  $('input[type!="submit"]', form).val('');
+	$('.error', form).remove();
+	$('input[type!="submit"]', form).val('');
 }
 
 $(document).ready(function()
 {
-  //initNavigation();
-  initHorzMenu();
-  initBinds();
+	//initNavigation();
+	initHorzMenu();
+	initBinds();
 
-  $('input:submit, a.button').button();
-  //$('#auto-turn').button();
-  $('input:text').addClass('ui-widget');
+	$('input:submit, a.button').button();
+	//$('#auto-turn').button();
+	$('input:text').addClass('ui-widget');
 
-  describeSections();
-  showSection(getCurrentSectionName() || "registration");
+	describeSections();
+	showSection(getCurrentSectionName() || "autorisation");
 });

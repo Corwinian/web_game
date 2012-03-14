@@ -35,7 +35,7 @@
 			"file": "main.html",
 			"settings":
 			{
-				"buffer_size": 1277,
+				"buffer_size": 1647,
 				"line_ending": "Unix"
 			}
 		},
@@ -43,15 +43,7 @@
 			"file": "js/main.js",
 			"settings":
 			{
-				"buffer_size": 2982,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
-			"settings":
-			{
-				"buffer_size": 30461,
+				"buffer_size": 4027,
 				"line_ending": "Unix"
 			}
 		},
@@ -128,11 +120,6 @@
 	},
 	"file_history":
 	[
-		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/User/Default (Linux).sublime-keymap",
-		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Default/Preferences.sublime-settings",
-		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/User/Preferences.sublime-settings",
-		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/User/Package Control.sublime-settings",
-		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Alignment/Base File.sublime-settings",
 		"/home/corwin/Dropbox/Учеба/web_game/client/js/utils.js",
 		"/home/corwin/Dropbox/Учеба/web_game/client/web_client",
 		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
@@ -158,7 +145,8 @@
 		"/home/corwin/Dropbox/Учеба/Moroz2/rle.py",
 		"/home/corwin/Dropbox/Учеба/Moroz2/hafman.py",
 		"/home/corwin/Dropbox/Учеба/Moroz2/lzw.py",
-		"/home/corwin/Dropbox/Учеба/web_game/src/server.py"
+		"/home/corwin/Dropbox/Учеба/web_game/src/server.py",
+		"/home/corwin/Dropbox/sinc/sublime-text-2/Packages/User/Package Control.sublime-settings"
 	],
 	"find":
 	{
@@ -201,7 +189,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -209,15 +197,15 @@
 					"file": "main.html",
 					"settings":
 					{
-						"buffer_size": 1277,
+						"buffer_size": 1647,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								626,
-								626
+								0,
+								0
 							]
 						],
 						"settings":
@@ -226,7 +214,34 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 15.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 0,
+					"file": "main.html",
+					"settings":
+					{
+						"buffer_size": 1647,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								288,
+								288
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -236,15 +251,15 @@
 					"file": "js/main.js",
 					"settings":
 					{
-						"buffer_size": 2982,
+						"buffer_size": 4027,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2338,
-								2338
+								0,
+								0
 							]
 						],
 						"settings":
@@ -254,40 +269,13 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1194.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "/home/corwin/Dropbox/sinc/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
-					"settings":
-					{
-						"buffer_size": 30461,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								9961,
-								9961
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2682.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
 					"file": "js/ai.js",
 					"settings":
 					{
@@ -313,7 +301,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 3,
 					"file": "style.css",
 					"settings":
 					{
@@ -324,8 +312,8 @@
 						"selection":
 						[
 							[
-								796,
-								796
+								141,
+								141
 							]
 						],
 						"settings":
@@ -335,7 +323,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 736.0,
+						"translation.y": 128.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
