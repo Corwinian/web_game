@@ -65,6 +65,22 @@ Section = $.inherit(
 	}
 );
 
+LobbySection = $.inherit(
+  Section,
+  {
+    __constructor: function()
+    {
+      this.__base('lobby');
+    },
+    show: function() {
+      this.__base();
+      $('#menu, #leave-game, #current-user').show();
+      showCurrentUser('');
+//      initLobby();
+    }
+  }
+);
+
 SectionWithNavigation = $.inherit(
 	Section,
 	{
@@ -87,6 +103,7 @@ function describeSections()
 	sections = {
 		'registration': new Section('registration'),
 		'autorisation': new Section('autorisation'),
+		'lobby': new LobbySection(),
 	}
 }
 
@@ -145,7 +162,7 @@ function submitForm(form, handler, grabber, command)
 	var data = grabber ? grabber(form): grabForm(form);
 	var commands = {
 		'registration': function() { return { action: 'register' }; },
-		'autorisation': function() { return { action: 'autorisation' }; },
+		'autorisation': function() { return { action: 'login' }; },
 	}
 	command = command || commands[form.attr('name')]();
 	if (command.action == 'register' || command.action == 'autorisation')
@@ -181,8 +198,8 @@ function initBinds()
 	{
 		return submitForm($(this), function(json, data)
 			{
-				if(sessionStorage.length && sessionStorage.username == data.username &&
-					inGame())
+//				if(sessionStorage.length && sessionStorage.username == data.username &&
+//					inGame())
 				{
 					showSection('lobby');
 					return;
