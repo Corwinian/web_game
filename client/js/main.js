@@ -123,57 +123,26 @@ function getLobbyState()
     }
   }
 
-  var command = { action: 'getMessages' };
+  var command = { action: 'getMessages', since:0 };
   if (sections.lobby.last_id)
   {
     $.extend(command, { since: sections.lobby.last_id });
   }
-  sendRequest(command, function (json)
+  sendNonAuthorizedRequest(command, function (json)
   {
-    if (json.chat.length)
+    if (json.messages.length)
     {
-      sections.lobby.last_id = json.chat[json.chat.length-1].id;
-      $.each(json.chat, function(i, entry)
+      sections.lobby.last_id = json.messages[json.messages.length-1].id;
+      $.each(json.messages, function(i, entry)
       {
-        // example: 2010-11-18 13:06:08.071000
-        var match = entry.time.match(/^[\d-]+\s(\d\d):(\d\d).*$/);
-        var hours = (parseInt(match[1]) - (new Date()).getTimezoneOffset() / 60) % 24;
-        var minutes = match[2];
-        var time = '[' + hours + ':' + minutes + ']';
         $('#chat-window').append($('<div/>')
           .append($('<p/>', { class: 'chat-header' })
-            .append(time)
+            .append(entry.time)
             .append($('<br/>'))
             .append($('<p/>', { class: 'chat-username', text: entry.username })))
-          .append($('<p/>', { class: 'chat-message', text: entry.message }))
+          .append($('<p/>', { class: 'chat-message', text: entry.text}))
         );
       });
-    }
-    delayedSetTimeout();
-  });
-
-  sendRequest(addGame({ action: 'getPlayersListForGame' }), function (json)
-  {
-    var all_ready = json.players.length == sessionStorage.max_players;
-
-    var players_counter = $('#players h3').empty();
-    players_counter.text(json.players.length + ' / ' + sessionStorage.max_players);
-
-    var players_list = $('#players-list').empty();
-    $.each(json.players, function(i, player)
-    {
-      var status = player.status.replace('_', '-');
-      var ready = status == 'ready' || status == 'in-game';
-      all_ready = all_ready && ready;
-      players_list
-        .append($('<tr/>')
-          .append($('<td/>', { class: 'username' }).text(player.username))
-          .append($('<td/>').addClass(status).addClass('status')))
-    });
-    if (all_ready)
-    {
-      sessionStorage.armyName = $('#choose-army :selected').text();
-      showSection('game');
     }
     delayedSetTimeout();
   });
