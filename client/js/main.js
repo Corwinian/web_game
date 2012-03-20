@@ -76,7 +76,7 @@ LobbySection = $.inherit(
       this.__base();
       $('#menu, #leave-game, #current-user').show();
       showCurrentUser('');
-//      initLobby();
+      initLobby();
     }
   }
 );
@@ -101,28 +101,9 @@ function initLobby()
 {
   if(!sessionStorage.length)
   {
-    showSection('registration');
-  }
-  else if(!inGame())
-  {
-    showSection('active-games');
+    showSection('autorisation');
   }
 
-  sendRequest({ action: 'getGamesList' }, function (json)
-  {
-    var currentGame;
-    $.each(json.games, function (i, game) {
-      if (game.gameName == sessionStorage.gameName)
-      {
-        currentGame = game;
-        return;
-      }
-    });
-    sessionStorage.factionName = currentGame.factionName;
-
-    sessionStorage.max_players = currentGame.playersCount;
-
-  });
   getLobbyState();
 }
 
@@ -142,7 +123,7 @@ function getLobbyState()
     }
   }
 
-  var command = addGame({ cmd: 'getChatHistory' });
+  var command = { action: 'getMessages' };
   if (sections.lobby.last_id)
   {
     $.extend(command, { since: sections.lobby.last_id });
