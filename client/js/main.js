@@ -97,6 +97,107 @@ SectionWithNavigation = $.inherit(
 	}
 );
 
+function initLobby()
+{
+  if(!sessionStorage.length)
+  {
+    showSection('registration');
+  }
+  else if(!inGame())
+  {
+    showSection('active-games');
+  }
+
+  sendRequest({ action: 'getGamesList' }, function (json)
+  {
+    var currentGame;
+    $.each(json.games, function (i, game) {
+      if (game.gameName == sessionStorage.gameName)
+      {
+        currentGame = game;
+        return;
+      }
+    });
+    sessionStorage.factionName = currentGame.factionName;
+
+    sessionStorage.max_players = currentGame.playersCount;
+
+  });
+  getLobbyState();
+}
+
+function getLobbyState()
+{
+  if(getCurrentSectionName() != 'lobby')
+  {
+    return;
+  }
+
+  var calls = 2;
+  function delayedSetTimeout()
+  {
+    if(!--calls)
+    {
+      setTimeout(getLobbyState, 3000);
+    }
+  }
+
+  var command = addGame({ cmd: 'getChatHistory' });
+  if (sections.lobby.last_id)
+  {
+    $.extend(command, { since: sections.lobby.last_id });
+  }
+  sendRequest(command, function (json)
+  {
+    if (json.chat.length)
+    {
+      sections.lobby.last_id = json.chat[json.chat.length-1].id;
+      $.each(json.chat, function(i, entry)
+      {
+        // example: 2010-11-18 13:06:08.071000
+        var match = entry.time.match(/^[\d-]+\s(\d\d):(\d\d).*$/);
+        var hours = (parseInt(match[1]) - (new Date()).getTimezoneOffset() / 60) % 24;
+        var minutes = match[2];
+        var time = '[' + hours + ':' + minutes + ']';
+        $('#chat-window').append($('<div/>')
+          .append($('<p/>', { class: 'chat-header' })
+            .append(time)
+            .append($('<br/>'))
+            .append($('<p/>', { class: 'chat-username', text: entry.username })))
+          .append($('<p/>', { class: 'chat-message', text: entry.message }))
+        );
+      });
+    }
+    delayedSetTimeout();
+  });
+
+  sendRequest(addGame({ action: 'getPlayersListForGame' }), function (json)
+  {
+    var all_ready = json.players.length == sessionStorage.max_players;
+
+    var players_counter = $('#players h3').empty();
+    players_counter.text(json.players.length + ' / ' + sessionStorage.max_players);
+
+    var players_list = $('#players-list').empty();
+    $.each(json.players, function(i, player)
+    {
+      var status = player.status.replace('_', '-');
+      var ready = status == 'ready' || status == 'in-game';
+      all_ready = all_ready && ready;
+      players_list
+        .append($('<tr/>')
+          .append($('<td/>', { class: 'username' }).text(player.username))
+          .append($('<td/>').addClass(status).addClass('status')))
+    });
+    if (all_ready)
+    {
+      sessionStorage.armyName = $('#choose-army :selected').text();
+      showSection('game');
+    }
+    delayedSetTimeout();
+  });
+}
+
 
 function describeSections()
 {
@@ -163,9 +264,10 @@ function submitForm(form, handler, grabber, command)
 	var commands = {
 		'registration': function() { return { action: 'register' }; },
 		'autorisation': function() { return { action: 'login' }; },
+		'send-message': function() { return { action: 'sendMessage' }; },
 	}
 	command = command || commands[form.attr('name')]();
-	if (command.action == 'register' || command.action == 'autorisation')
+	if (command.action == 'register' || command.action == 'login')
 		requestFunc = sendNonAuthorizedRequest;
 	else
 		requestFunc = sendRequest;
@@ -198,19 +300,27 @@ function initBinds()
 	{
 		return submitForm($(this), function(json, data)
 			{
-//				if(sessionStorage.length && sessionStorage.username == data.username &&
-//					inGame())
-				{
-					showSection('lobby');
-					return;
-				}
 				sessionStorage.clear();
 				sessionStorage.sid = json.sid;
 				sessionStorage.username = data.username;
-				showSection('active-games');
+				showSection('lobby');
+				return;
 			}
 		);
 	});
+	//Lobby
+	$('form[name="send-message"]').submit(function()
+	{
+		var form = $(this);
+		var message = $('#send-messge-text', form);
+		if (message.val()!="")
+		{
+			return submitForm(form, function() {message.val('');});
+		}
+		return false;
+	}
+			
+	);
 }
 
 function clearForm(form)
