@@ -114,20 +114,12 @@ function getLobbyState()
     return;
   }
 
-  var calls = 2;
-  function delayedSetTimeout()
-  {
-    if(!--calls)
-    {
-      setTimeout(getLobbyState, 3000);
-    }
-  }
-
   var command = { action: 'getMessages', since:0 };
   if (sections.lobby.last_id)
   {
     $.extend(command, { since: sections.lobby.last_id });
   }
+
   sendNonAuthorizedRequest(command, function (json)
   {
     if (json.messages.length)
@@ -144,8 +136,8 @@ function getLobbyState()
         );
       });
     }
-    delayedSetTimeout();
   });
+  setTimeout(getLobbyState, 3000);
 }
 
 
