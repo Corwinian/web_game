@@ -63,32 +63,10 @@ Section = $.inherit(
 
 			if (this.name == "registration" || this.name == "autorisation")
 			{
-				$('#menu > li').hide();
 				$('#menu li[id="reg_window"]').show();
-			}
-			else 
-			{
-				$('#menu > li').show();
-				$('#menu li[id="reg_window"]').hide();
 			}
 		}
 	}
-);
-
-LobbySection = $.inherit(
-  Section,
-  {
-    __constructor: function()
-    {
-      this.__base('lobby');
-    },
-    show: function() {
-      this.__base();
-      $('#menu, #leave-game, #current-user').show();
-      showCurrentUser('');
-      initLobby();
-    }
-  }
 );
 
 SectionWithNavigation = $.inherit(
@@ -102,9 +80,23 @@ SectionWithNavigation = $.inherit(
 
 			showCurrentUser('<i>Welcome</i>, ');
 
-			$('#menu, #menu li[id!="leave-game"], nav, #nav-vertical-line').show();
+			$('#menu, #menu li[id!="reg_window"], #nav-vertical-line, nav').show();
 		}
 	}
+);
+
+LobbySection = $.inherit(
+ SectionWithNavigation,
+  {
+    __constructor: function()
+    {
+      this.__base('lobby');
+    },
+    show: function() {
+      this.__base();
+      initLobby();
+    }
+  }
 );
 
 function initLobby()
@@ -236,6 +228,38 @@ function submitForm(form, handler, grabber, command)
 
 	return false; // ban POST requests
 }
+function initNavigation()
+{
+  var items = $("nav > p");
+
+  $(".main-section").hide();
+  items.click(function()
+  {
+    var item = $(this);
+
+    if (item.hasClass("nav-current")) return;
+    $.each(items, function() { $(this).removeClass("nav-current"); });
+    item.addClass("nav-current");
+
+    showSection(item.attr('id').substring(4)); // strip 'nav-' prefix
+  });
+
+  // add animation
+  var pad_out = 25;
+  var pad_in = 15;
+  items.each(function()
+  {
+    $(this).hover(function()
+    {
+      $(this).animate({ paddingLeft: pad_out }, 150);
+    },
+    function()
+    {
+      $(this).animate({ paddingLeft: pad_in }, 150);
+    });
+  });
+}
+
 
 function initBinds()
 {
@@ -283,7 +307,7 @@ function clearForm(form)
 
 $(document).ready(function()
 {
-	//initNavigation();
+	initNavigation();
 	initHorzMenu();
 	initBinds();
 
