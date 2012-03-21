@@ -255,7 +255,7 @@ function initBinds()
 	{
 		var form = $(this);
 		var message = $('#send-messge-text', form);
-		if (message.val()!="")
+		if (message.length != 0)
 		{
 			submitForm(form, function() {message.val('');});
 			getLobbyState();
