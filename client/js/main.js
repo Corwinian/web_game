@@ -56,11 +56,21 @@ Section = $.inherit(
 		},
 		show: function()
 		{
-			$('#content > *, #menu, #menu > li').hide();
+			$('#content > *, #menu > li').hide();
 			$('#' + this.name).show();
 
+			non_auth = (this.name == "registration" || this.name == "autorisation");
+
 			if (this.name == "registration" || this.name == "autorisation")
-			{ $('#menu, #menu li[id="reg_window"]').show();}
+			{
+				$('#menu > li').hide();
+				$('#menu li[id="reg_window"]').show();
+			}
+			else 
+			{
+				$('#menu > li').show();
+				$('#menu li[id="reg_window"]').hide();
+			}
 		}
 	}
 );
@@ -154,7 +164,7 @@ function initHorzMenu()
 {
 	$("#sign-out").click(function()
 	{
-		sendRequest({ action :'unregister' }, function (json)
+		sendRequest({ action :'logout' }, function (json)
 		{
 			sessionStorage.clear();
 			showSection('autorisation');
