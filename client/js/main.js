@@ -136,8 +136,8 @@ function getLobbyState()
         );
       });
     }
+	setTimeout(getLobbyState, 3000);
   });
-  setTimeout(getLobbyState, 3000);
 }
 
 
@@ -257,9 +257,9 @@ function initBinds()
 		var message = $('#send-messge-text', form);
 		if (message.val()!="")
 		{
-			return submitForm(form, function() {message.val('');});
+			submitForm(form, function() {message.val('');});
+			getLobbyState();
 		}
-		return false;
 	}
 			
 	);
