@@ -142,6 +142,34 @@ function getLobbyState()
   });
 }
 
+function updateSelect($select, command, array, attr)
+{
+	sendNonAuthorizedRequest({ action: command }, function(json) {
+    $select.empty();
+    $.each(json[array], function(i, option) {
+      $select.append(new Option(option[attr], i));
+    });
+  });
+}
+
+function initCreateGame(){
+	updateSelect($('#creation-map'), "getMapList", 'maps', 'mapName');
+}
+
+CreateGameSection = $.inherit(
+  SectionWithNavigation,
+  {
+    __constructor: function()
+    {
+      this.__base('create-game');
+    },
+    show: function()
+    {
+      this.__base();
+      initCreateGame();
+    }
+  }
+);
 
 function describeSections()
 {
@@ -149,6 +177,7 @@ function describeSections()
 		'registration': new Section('registration'),
 		'autorisation': new Section('autorisation'),
 		'lobby': new LobbySection(),
+		'create-game': new CreateGameSection(),
 	}
 }
 
