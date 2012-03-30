@@ -44,6 +44,7 @@ def serve_ajax():
 	
 
 def main():
+	parser.create_def_maps()
 	bottle.run(host=SERVER, port=PORT)
 	return 0
 

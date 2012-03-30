@@ -238,6 +238,7 @@ function submitForm(form, handler, grabber, command)
 		'registration': function() { return { action: 'register' }; },
 		'autorisation': function() { return { action: 'login' }; },
 		'send-message': function() { return { action: 'sendMessage' }; },
+	//	'send-message': function() { return { action: 'sendMessage' }; },
 	}
 	command = command || commands[form.attr('name')]();
 	if (command.action == 'register' || command.action == 'login')
@@ -317,15 +318,33 @@ function initBinds()
 	$('form[name="send-message"]').submit(function()
 	{
 		var form = $(this);
-		var message = $('#send-messge-text', form);
+		var message = $('#send-message-text', form);
 		if (message.length != 0)
 		{
 			submitForm(form, function() {message.val('');});
 			getLobbyState();
+			showSection('lobby');
+			return;
 		}
-	}
-			
-	);
+	});
+	//CreateGame
+	$('form[name="create-game"]').submit(function()
+	{
+		var form = $(this);
+		var name= $('#creation-title', form);
+		if (name.length != 0){
+
+		}
+	//	else{
+	//		alert("Game Name must be not empty");
+	//		return;
+	//	}
+
+
+
+
+
+	});
 }
 
 function clearForm(form)
