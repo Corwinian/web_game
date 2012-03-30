@@ -153,7 +153,7 @@ function updateSelect($select, command, array, attr)
 }
 
 function initCreateGame(){
-	updateSelect($('#creation-map'), "getMapList", 'maps', 'mapName');
+	updateSelect($('#creation-map'), "getMapList", 'maps', 'mapId');
 }
 
 CreateGameSection = $.inherit(
@@ -228,7 +228,7 @@ function submitForm(form, handler, grabber, command)
 		});
 		$("select", form).each(function(i, v)
 		{
-			obj[$(v).attr('name')] = $(':selected', v).text();
+			obj[$(v).attr('name')] = $(':selected', v).val();
 		});
 		return obj;
 	}
@@ -238,7 +238,7 @@ function submitForm(form, handler, grabber, command)
 		'registration': function() { return { action: 'register' }; },
 		'autorisation': function() { return { action: 'login' }; },
 		'send-message': function() { return { action: 'sendMessage' }; },
-	//	'send-message': function() { return { action: 'sendMessage' }; },
+		'create-game': function() { return { action: 'createGame' }; },
 	}
 	command = command || commands[form.attr('name')]();
 	if (command.action == 'register' || command.action == 'login')
@@ -330,13 +330,13 @@ function initBinds()
 	{
 		var form = $(this);
 		var name= $('#creation-title', form);
-		if (name.length != 0){
-
+		if (name.val().length != 0){
+			return submitForm(form, function() {name.val(''); getLobbyState()});
 		}
-	//	else{
-	//		alert("Game Name must be not empty");
-	//		return;
-	//	}
+		else{
+			alert("Game Name must be not empty");
+			return false;
+		}
 
 	});
 }
