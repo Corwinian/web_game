@@ -257,9 +257,9 @@ function initBinds()
 		var message = $('#send-messge-text', form);
 		if (message.val()!="")
 		{
-			submitForm(form, function() {message.val('');});
-			getLobbyState();
+			return submitForm(form, function() {message.val(''); getLobbyState()});
 		}
+		return;
 	}
 			
 	);
