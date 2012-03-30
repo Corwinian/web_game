@@ -319,10 +319,11 @@ function initBinds()
 	{
 		var form = $(this);
 		var message = $('#send-message-text', form);
-		if (message.length != 0)
+		if (message.val().length != 0)
 		{
 			return submitForm(form, function() {message.val(''); getLobbyState()});
 		}
+		return false;
 	});
 	//CreateGame
 	$('form[name="create-game"]').submit(function()
