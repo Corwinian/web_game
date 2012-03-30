@@ -92,7 +92,6 @@ class Map(Base):
 		super().__init__()
 		self.checkMapName(name)
 		
-		
 		if not  1 < playersNum < 6: 
 			raise BadPlayersNum()
 				
@@ -104,7 +103,7 @@ class Map(Base):
 		self.turnsNum = turnsNum
 		self.picture = picture
 		self.thumbnail = thumbnail
-		
+
 		
 	def checkMapName(self, name):
 		
@@ -112,9 +111,13 @@ class Map(Base):
 			raise BadMapName()
 		if not db.query(Map).filter_by(name = name).count() == 0:
 			raise MapNameTaken()
-   
+  
+	def to_json(self):
+		print ("map to json")
+		return {"mapId":self.id, "mapName":self.name, "turnsNum":self.turnsNum, "playersNum":self.playersNumber, "picture":self.picture}
+
 	def __repr__(self):#потом подправить форматированый вывод
-		return "<Map('%s', players Num'%s', turns Num'%s')>" % (self.name, self.playersNumber, self.turnsNum)
+		return "<Map('%s' - , players Num '%s', turns Num'%s')>" % (self.name, self.playersNumber, self.turnsNum)
 
 
 class Region(Base):
@@ -233,6 +236,8 @@ class Chat(Base):
 		self.user = user
 		self.message = message 
 		self.time = math.trunc(time.time()) if not DEBUG else self.generateTimeForTest()
+		if DEBUG:
+			print ("time{0}".format(self.time));
 
 class DataBase:
 	instance = None

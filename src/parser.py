@@ -121,16 +121,15 @@ def get_messages(since, count = 100):
 		})
 		
 def upload_map(mapName, playersNum, turnsNum, thumbnail=None, picture=None, regions =None ):
-	
 	newMap = Map(mapName, playersNum, turnsNum, thumbnail, picture)
 	dbi.add(newMap)
 	return responded_ok({"mapId":newMap.id})
 
 def get_maps_list():
 	try:
-		return responded_ok({"mapList": [map[0] for map in dbi.query(Map.id).all()]})
+		return responded_ok({"maps": [map.to_json() for map in dbi.query(Map).all()]})
 	except:
-		raise NotMaps() 
+		raise NotMaps()
 
 def create_def_maps():
 	for newMap in config.DEFAULT_MAPS:
@@ -170,6 +169,7 @@ actions = {
 				"logout": logout_user,
 				"uploadMap": upload_map,
 				"getMapsList": get_maps_list,
+				"getMapList": get_maps_list,
 				"createDefaultMaps": create_def_maps,
 				"createGame":create_game,
 				"getGamesList": get_games_list,
