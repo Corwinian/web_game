@@ -321,10 +321,7 @@ function initBinds()
 		var message = $('#send-message-text', form);
 		if (message.length != 0)
 		{
-			submitForm(form, function() {message.val('');});
-			getLobbyState();
-			showSection('lobby');
-			return;
+			return submitForm(form, function() {message.val(''); getLobbyState()});
 		}
 	});
 	//CreateGame
@@ -339,10 +336,6 @@ function initBinds()
 	//		alert("Game Name must be not empty");
 	//		return;
 	//	}
-
-
-
-
 
 	});
 }
