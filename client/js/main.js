@@ -331,7 +331,12 @@ function initBinds()
 		var form = $(this);
 		var name= $('#creation-title', form);
 		if (name.val().length != 0){
-			return submitForm(form, function() {name.val(''); getLobbyState()});
+			return submitForm(form, function(json){
+				name.val(''); 
+				getLobbyState();
+				sessionStorage.gameId = json.gameId;
+				showSection('lobby');
+			});
 		}
 		else{
 			alert("Game Name must be not empty");
