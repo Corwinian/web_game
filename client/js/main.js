@@ -142,18 +142,18 @@ function getLobbyState()
   });
 }
 
-function updateSelect($select, command, array, attr)
+function updateSelect($select, command, array, attrId, attrName)
 {
 	sendNonAuthorizedRequest({ action: command }, function(json) {
     $select.empty();
     $.each(json[array], function(i, option) {
-      $select.append(new Option(option[attr], i));
+      $select.append(new Option(option[attrName], option[attrId]));
     });
   });
 }
 
 function initCreateGame(){
-	updateSelect($('#creation-map'), "getMapList", 'maps', 'mapId');
+	updateSelect($('#creation-map'), "getMapList", 'maps', 'mapId', 'mapName');
 }
 
 CreateGameSection = $.inherit(
