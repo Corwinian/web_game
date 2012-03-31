@@ -4,6 +4,7 @@ import unittest
 
 import os
 import sys
+import optparse
 import json
 
 from config import DEBUG
@@ -20,15 +21,15 @@ class TestFromFile(unittest.TestCase):
 
 	def tearDown(self):
 		print ("Test %s description: %s\n" % (self.inFile, self.testDescr))
-		
+
 	def runTest(self):
 		f = open(self.ansFile)
 		ans = f.read()
 		out = parseDataFromFile(self.inFile)
-	
-		self.testDescr = out['description']		
+
+		self.testDescr = out['description']
 		self.assertListEqual(out['result'], json.loads(ans))
-		
+
 def parseDataFromFile(fileName):
 	try:
 		file = open(fileName, 'r')
@@ -45,17 +46,20 @@ def parseDataFromFile(fileName):
 
 	if 'description' in object:
 		description = object['description']
-		
-	object = object['test']			
+
+	object = object['test']
+	print ("tese")
 	result = list()
 	if isinstance(object, list):
 		for obj in object:
-			result.append(json.loads(parse_request(json.dumps(obj, **JSON_DUMPS_FORMAT))))
+			print("obj")
+			print(obj)
+			result.append(json.loads(parse_request(obj)))
 	else:
 		result.append(parse_request(object))
 		return {'result': [r1.read()], 'description': description}
 
-	return {'result': result, 'description': description}		
+	return {'result': result, 'description': description}
 
 def suite():
 	suite = unittest.TestSuite()
@@ -65,27 +69,28 @@ def suite():
 def load_dirs(start_dir):
 	return { dir : load_dirs(dir) for dir in os.listdir(start_dir) if os.path.isdir(dir)}
 
-def help():
-	sys.exit("Format: python TestFromFiles.py [begin] end [testCategory] ")		
+def parse_options():
+	parser = optparse.OptionParser(usage='archivaor.py [begin] end [testCategory] ')
+	parser.add_option('-g', '--group', dest='testGroup', help='compress metod', metavar='FILE', default= '')
+	return parser.parse_args()
 
 def main(a, b, c):
 	global begin
 	global end
-	global testDir	
+	global testDir
 	begin = a
 	end = b
 	testDir = c
 	unittest.TextTestRunner().run(suite())
 
 if __name__=='__main__':
-	argc = len(sys.argv)
-	
+	(options, args) = parse_options()
+
 	DEF_DIR = "tests/"
-	
-	if argc < 2:
-		help()
-	
-	start =  int (sys.argv[2]) if argc > 3  else 0
-	fin = int(sys.argv[2]) if argc == 3 else int(sys.argv[3])
-	directory = DEF_DIR + (sys.argv[1] if sys.argv[1] != 'rootDir' else '')
+
+	start = 0 if len(args)== 1 else int(args[0])
+	fin = int(args[0 if len(args) == 1 else 1])
+	directory = DEF_DIR + options.testGroup
+
+	print (directory)
 	main(start, fin, directory)
