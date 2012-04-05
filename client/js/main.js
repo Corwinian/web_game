@@ -101,12 +101,29 @@ LobbySection = $.inherit(
 
 function initLobby()
 {
-  if(!sessionStorage.length)
-  {
-    showSection('autorisation');
-  }
+	$('#players').hide();	
+	if(!sessionStorage.length) {
+		showSection('autorisation');
+	}
+	
+	if(sessionStorage.gameId != undefined){
+		$('#players').show();	
+		command = {"action":'getGameStage', "gameId":sessionStorage.gameId} 
 
-  getLobbyState();
+		sendNonAuthorizedRequest(command, function (json)
+		{
+			players = json.gameState.players;
+			if (players.length){
+				$.each(players, function(i, entry){
+			        $('#players-list').append($('<div/>')
+					.append($('<p/>', { class: 'chat-username', text: entry.username })))
+//          .append($('<p/>', { class: 'chat-message', text: entry.text}))
+				});
+			}
+		})    
+	}  
+
+	getLobbyState();
 }
 
 function getLobbyState()
