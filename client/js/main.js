@@ -209,6 +209,16 @@ function initHorzMenu()
 		});
 	});
 
+	$("#leave_game").click(function()
+	{
+		sendRequest({ action :'leaveGame' }, function (json)
+		{
+			sessionStorage.gameId = undefined;
+			showSection('lobby');
+		});
+	});
+
+
 	$("#reg_window").click(function() {	showSection('registration');});
 }
 
