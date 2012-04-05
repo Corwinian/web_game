@@ -215,8 +215,13 @@ class Game(Base):
 	def getMaxPlayersInGame(self):
 		return	db.query(Map).filter_by(id = self.mapId).one().playersNumber
 
+	def getStage(self):
+		players = [{"username":user.name, "userId":user.id} for user in  db.query(User).filter_by(gameId = self.id).all()]
+		stage = {"players":players}
+		return stage
+
 	def __repr__(self):#потом подправить форматированый вывод
-		return "<Gae('%s','%s',)>" % (self.name, self.playersNumber)
+		return "<Game('%s','%s',)>" % (self.name, self.playersInGame)
 
 class Chat(Base):
 	__tablename__ = "chat"

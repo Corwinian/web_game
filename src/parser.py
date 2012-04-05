@@ -161,8 +161,11 @@ def get_games_list():
 	try:
 		return responded_ok({"gamesList": [game[0] for game in dbi.query(Game.id).all()]})
 	except:
-		raise NotGames() 
-	
+		raise NotGames()
+
+def get_game_stage(gameId):
+	return responded_ok({"gameState": dbi.getGame(gameId).getStage()})
+
 actions = {
 				"register": register_user,
 				"login": login_user,
@@ -177,5 +180,6 @@ actions = {
 				"leaveGame": leave_game,
 				"sendMessage": send_message,
 				"getMessages" : get_messages,
+				"getGameStage" : get_game_stage,
 				"resetServer": reset_server,
 }
