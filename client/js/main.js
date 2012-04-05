@@ -107,7 +107,7 @@ function initLobby()
 	}
 	
 	if(sessionStorage.gameId != undefined){
-		$('#players').show();	
+		$('#players, #leave_game').show();	
 		command = {"action":'getGameStage', "gameId":sessionStorage.gameId} 
 
 		sendNonAuthorizedRequest(command, function (json)
