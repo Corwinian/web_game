@@ -136,7 +136,7 @@ def create_def_maps():
 		upload_map(**newMap)
 	return responded_ok()
 
-def create_game(sid, gameName, mapId, gameDescription=None):
+def create_game(sid, gameName, mapId, gameDescription=None, playersNum=None):
 	dbi.checkSid(sid)
 	
 	newGame = Game(gameName, mapId, gameDescription)
