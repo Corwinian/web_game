@@ -231,8 +231,7 @@ class Game(Base):
 		return	db.query(Map).filter_by(id = self.mapId).one().playersNumber
 
 	def updateStage(self):
-		if self.gameStatus == self.gameStatusWaiting:
-			len(self.getPlayers()) == db.query(User).filter_by(gameId= self.id, isReady = True).all()
+		if self.gameStatus == self.gameStatusWaiting and len(self.getPlayers()) == len(db.query(User).filter_by(gameId= self.id, isReady = True).all()) and self.playersInGame == self.getMaxPlayersInGame():
 			self.gameStatus = self.gameStatusProcessing
 
 
