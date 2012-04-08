@@ -154,6 +154,8 @@ def join_game(sid, gameId):
 	return responded_ok()
 
 def set_readiness_status(sid, isReady):
+	if isReady not in range(2):
+		raise BadReadinessStatus
 	dbi.getUser(sid).setStatus()
 	return responded_ok()
 
