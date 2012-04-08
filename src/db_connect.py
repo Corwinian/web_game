@@ -185,14 +185,14 @@ class Game(Base):
 	name = uniqstring() 
 	mapId = fkey('maps.id')
 	playersInGame = integer()
-	gameStatus = string()
+	gameStatus = integer()
 	Description = string(True)
 	turn = integer(True)
 	activePlayerId=  integer(True)
 
-	gameStatusWaiting = "waiting the begining"
-	gameStatusProcessing = "processing"
-	gameStatusEnd = "game finished"
+	gameStatusWaiting = 1
+	gameStatusProcessing = 2
+	gameStatusEnd = 3
 
 	def __init__(self, name, mapId, Description):
 		if not db.checkMap(mapId):
