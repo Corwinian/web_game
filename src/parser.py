@@ -153,6 +153,10 @@ def join_game(sid, gameId):
 	dbi.getUser(sid).joinGame(gameId)
 	return responded_ok()
 
+def set_readiness_status(sid, isReady):
+	dbi.getUser(sid).setStatus()
+	return responded_ok()
+
 def leave_game(sid):
 	dbi.getUser(sid).leaveGame()
 	return responded_ok()
@@ -182,4 +186,5 @@ actions = {
 				"getMessages" : get_messages,
 				"getGameStage" : get_game_stage,
 				"resetServer": reset_server,
+				"setReadinessStatus": set_readiness_status,
 }

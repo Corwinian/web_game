@@ -37,6 +37,7 @@ class User(Base):
 	sid = integer(True) if DEBUG else string(True)
 	userId = integer(True) if DEBUG else string(True)
 	gameId = fkey('games.id')
+	isReady = bool()
 
 	def __init__(self, name, password):
 		super().__init__()
@@ -73,6 +74,13 @@ class User(Base):
 		
 		self.gameId = None
 		db.commit()
+
+	def setStatus(self, status):
+		if self.gameId is None:
+			raise NotInGame()
+		self.isReady = status
+		if status:
+			db.getGame(self.gameId).updateStage()
 
 	def __repr__(self):
 		return "<User('%s','%s',)>" % (self.name, self.password)
@@ -179,6 +187,7 @@ class Game(Base):
 	Description = string(True)
 
 	gameStatusWaiting = "waiting the begining"
+	gameStatusProcessing = "processing"
 	gameStatusEnd = "game finished"
 
 	def __init__(self, name, mapId, Description):
@@ -212,8 +221,18 @@ class Game(Base):
 		if self.playersInGame == 0:
 			self.gameStatus = self.gameStatusEnd
 		
+	def getPlayers(self):
+		if self.gameStatus != gameStatusEnd:
+			return db.query(User).filter_by(gameId= self.id).all()
+
 	def getMaxPlayersInGame(self):
 		return	db.query(Map).filter_by(id = self.mapId).one().playersNumber
+
+	def updateStage(self):
+		if self.gameStatus == gameStatusWaiting:
+			len(getPlayers()) == db.query(User).filter_by(gameId= self.id, isReady = True).all()
+			self.gameStatus = gameStatusProcessing
+
 
 	def getStage(self):
 		players = [{"username":user.name, "userId":user.id} for user in  db.query(User).filter_by(gameId = self.id).all()]
