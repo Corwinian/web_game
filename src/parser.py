@@ -165,7 +165,9 @@ def leave_game(sid):
 
 def get_games_list():
 	try:
-		return responded_ok({"gamesList": [game[0] for game in dbi.query(Game.id).all()]})
+		print ("get game list")
+		print ("game count - {0}".format(len(dbi.query(Game).filter(Game.gameStatus != Game.gameStatusEnd).all())))
+		return responded_ok({"games": [game.toList() for game in dbi.query(Game).filter(Game.gameStatus != Game.gameStatusEnd).all()]})
 	except:
 		raise NotGames()
 
@@ -182,6 +184,7 @@ actions = {
 				"createDefaultMaps": create_def_maps,
 				"createGame":create_game,
 				"getGamesList": get_games_list,
+				"getGameList": get_games_list,
 				"joinGame": join_game,
 				"leaveGame": leave_game,
 				"sendMessage": send_message,

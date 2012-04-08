@@ -113,7 +113,7 @@ class Map(Base):
 		self.turnsNum = turnsNum
 		self.picture = picture
 		self.thumbnail = thumbnail
-
+	
 		
 	def checkMapName(self, name):
 		
@@ -187,6 +187,8 @@ class Game(Base):
 	playersInGame = integer()
 	gameStatus = string()
 	Description = string(True)
+	turn = integer(True)
+	activePlayerId=  integer(True)
 
 	gameStatusWaiting = "waiting the begining"
 	gameStatusProcessing = "processing"
@@ -227,6 +229,9 @@ class Game(Base):
 		if self.gameStatus != self.gameStatusEnd:
 			return db.query(User).filter_by(gameId= self.id).all()
 
+	def getMaxTurnInGame(self):
+		return	db.query(Map).filter_by(id = self.mapId).one().turnsNum
+
 	def getMaxPlayersInGame(self):
 		return	db.query(Map).filter_by(id = self.mapId).one().playersNumber
 
@@ -239,6 +244,33 @@ class Game(Base):
 		players = [{"username":user.name, "userId":user.id} for user in  db.query(User).filter_by(gameId = self.id).all()]
 		stage = {"players":players}
 		return stage
+
+	def toList(self):
+		print ("to list")
+		create_list = lambda classAtr, restAtr, obj = self:	{ restAtr[i]: getattr(obj, classAtr[i]) for i in range(len(restAtr))}
+
+		gameAttrs = ['id', 'name', 'Description', 'gameStatus', 'turn', 'activePlayerId', 'mapId']
+
+		gameAttrNames = ['gameId', 'gameName', 'gameDescription', 'state',
+			'turn', 'activePlayerId', 'mapId']
+
+		print ("to sst")
+		#gameDesr = {gameAttrNames[i] : getattr(self, gameAttrs[i]) for i in range(len(gameAttrs))}
+		print ("end sst")
+		gameDesr = create_list(gameAttrs, gameAttrNames)
+
+		playerAttrs = ['id', 'name', 'isReady']
+		playerAttrNames = ['userId', 'username', 'isReady']
+
+		print ("players count - {0}".format(len(self.getPlayers())))
+		gameDesr["players"] = [create_list(playerAttrs, playerAttrNames, pl) for pl in self.getPlayers()]
+
+
+		gameDesr["turnsNum"] = self.getMaxTurnInGame()
+		gameDesr["maxPlayersNum"] = self.getMaxPlayersInGame()
+
+		return gameDesr
+		return {}
 
 	def __repr__(self):#потом подправить форматированый вывод
 		return "<Game('%s','%s',)>" % (self.name, self.playersInGame)
