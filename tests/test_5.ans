@@ -33,7 +33,8 @@
 		"sid": 2,  "userId": 2
 	},
 	{
-		"result": "badGameDescription"
+		"result": "ok",
+		"gameId":2
 	},
 	{
 		"result": "gameNameTaken"

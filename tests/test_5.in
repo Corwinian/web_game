@@ -21,29 +21,25 @@
 			"action": "createGame",
 			"sid": 1,
 			"gameName": "game1",
-			"mapId": 0,
-			"playersNum": 3
+			"mapId": 0
 		},
 		{
 			"action": "createGame",
 			"sid": 1,
 			"gameName": "",
-			"mapId": 1,
-			"playersNum": 2
+			"mapId": 1
 		},
 		{
 			"action": "createGame",
 			"sid": 1,
 			"gameName": "game1",
-			"mapId": 1,
-			"playersNum": 2
+			"mapId": 1
 		},
 		{
 			"action": "createGame",
 			"sid": 1,
 			"gameName": "game2",
-			"mapId": 1,
-			"playersNum": 2
+			"mapId": 1
 		},
 		{
 			"action": "register",
@@ -60,7 +56,6 @@
 			"sid": 2,
 			"gameName": "game2",
 			"mapId": 1,
-			"playersNum": 2,
 			"gameDescription": "fjjjjjjjjjjjjjjjfgahdsgjfsjjjjjjjjjjjjjjjjjasggggggggggggsaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddekjthjrettttttttttttttervvvvvvvvvvvvvvvvvvvvvvvkjassssssssssssljkkjkje46547777777777774634fnnnnnnnnnnnnnwe5457777335666666666663235555555555555fsn564n67k45k7jkdfsngdfkdhjkfjhkfjk46374686585678578e7658785654fgkfjfkdjkgjjjjjjjjjjjjjjjjjjjjhhhhhskddddddddddddddddddddddddddddddddddddddddddewrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
 		},
 		{
@@ -68,7 +63,6 @@
 			"sid": 2,
 			"gameName": "game1",
 			"mapId": 1,
-			"playersNum": 2,
 			"gameDescription": "game description"
 		}
 	],
