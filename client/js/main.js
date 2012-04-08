@@ -81,6 +81,7 @@ SectionWithNavigation = $.inherit(
 			showCurrentUser('<i>Welcome</i>, ');
 
 			$('#menu, #menu li[id!="reg_window"], #nav-vertical-line, nav').show();
+			$('#leave-game').hide();
 		}
 	}
 );
@@ -215,6 +216,7 @@ function initHorzMenu()
 		{
 			sessionStorage.gameId = undefined;
 			showSection('lobby');
+			$('#leave-game').hide();
 		});
 	});
 
