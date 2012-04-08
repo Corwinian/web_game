@@ -1,117 +1,90 @@
 {
-	"test":[
+	"test": [
 		{
 			"action": "resetServer"
-		},		{
+		},
+		{
 			"action": "createDefaultMaps"
 		},
 		{
-			"action": "register", 
-			"username": "user1", 
-			"password": "325glh"
+			"action": "uploadMap",
+			"mapName": "fgjajjsf",
+			"thumbnail": "mapThumb.jpg",
+			"picture": "map.jpg",
+			"regions": []
 		},
 		{
-			"action": "login", 
-			"username": "user1", 
-			"password": "325glh"
+			"action": "uploadMap",
+			"mapName": "fgjajjsfhjksdfhdfgufduiytiytiuyoryuoyuotddddddddddddddddddddddddddddddddddddddddddddddd",
+			"playersNum": 2,
+			"turnsNum": 5,
+			"thumbnail": "mapThumb.jpg",
+			"picture": "map.jpg",
+			"regions": []
 		},
 		{
-			"action": "register", 
-			"username": "user2", 
-			"password": "325glh"
+			"action": "uploadMap",
+			"mapName": "map2",
+			"playersNum": 1,
+			"turnsNum": 5,
+			"thumbnail": "mapThumb.jpg",
+			"picture": "map.jpg",
+			"regions": []
 		},
 		{
-			"action": "login", 
-			"username": "user2", 
-			"password": "325glh"
+			"action": "uploadMap",
+			"mapName": "map2",
+			"playersNum": "fdskgkjk",
+			"turnsNum": 5,
+			"thumbnail": "mapThumb.jpg",
+			"picture": "map.jpg",
+			"regions": []
 		},
 		{
-			"action": "register", 
-			"username": "user3", 
-			"password": "325glh"
+			"action": "uploadMap",
+			"mapName": "map2",
+			"playersNum": -5,
+			"turnsNum": 5,
+			"thumbnail": "mapThumb.jpg",
+			"picture": "map.jpg",
+			"regions": []
 		},
 		{
-			"action": "login", 
-			"username": "user3", 
-			"password": "325glh"
+			"action": "uploadMap",
+			"mapName": "map2",
+			"playersNum": 6,
+			"turnsNum": 5,
+			"thumbnail": "maps/mapThumb.jpg",
+			"picture": "maps/map.jpg",
+			"regions": []
 		},
 		{
-			"action": "register", 
-			"username": "user4", 
-			"password": "325glh"
+			"action": "uploadMap",
+			"mapName": "map2",
+			"playersNum": 2,
+			"turnsNum": 5,
+			"thumbnail": "maps/mapThumb.jpg",
+			"picture": "maps/map.jpg",
+			"regions":[]
 		},
 		{
-			"action": "login", 
-			"username": "user4", 
-			"password": "325glh"
+			"action": "uploadMap",
+			"mapName": "map3",
+			"playersNum": 2,
+			"turnsNum": 5,
+			"thumbnail": "maps/mapThumb.jpg",
+			"picture": "maps/map.jpg",
+			"regions": []
 		},
 		{
-			"action": "register", 
-			"username": "user5", 
-			"password": "325glh"
-		},
-		{
-			"action": "login", 
-			"username": "user5", 
-			"password": "325glh"
-		},
-		{
-			"action": "createGame", 
-			"sid": 6,
-			"gameName": "game1",
-			"gameDescription": "game1",
-			"mapId": 3			
-		},
-		{
-			"action": "createGame", 
-			"sid": 1,
-			"gameName": "game1",
-			"gameDescription": "game1",
-			"mapId": 9			
-		},
-		{
-			"action": "createGame", 
-			"sid": 1,
-			"gameName": "game1"
-		},
-		{
-			"action": "createGame", 
-			"sid": 1,
-			"gameName": "sjkgjskdhjskdsghhhhhhhhhhhhsdgsgdsagjklllllhkhkjhjfsgsdhdfhkhjkhjkhjkhjhkkkkkjdddddddddddddddddddd",
-			"mapId": 1
-		},
-		{
-			"action": "createGame", 
-			"sid": 1,
-			"gameName": "game1",
-			"mapId": 1
-		},
-		{
-			"action": "createGame", 
-			"sid": 2,
-			"gameName": "game1",
-			"mapId": 2
-		},
-		{
-			"action": "createGame", 
-			"sid": 1,
-			"gameName": "game2",
-			"mapId": 2
-		},
-		{
-			"action": "createGame", 
-			"sid": 3,
-			"gameName": "game2",
-			"mapId": 2
-		},
-		{
-			"action": "createGame", 
-			"sid": 1,
-			"gameName": "game3",
-			"mapId": 2,
-			"gameDescription": "game description"
+			"action": "uploadMap",
+			"mapName": "map2",
+			"playersNum": 3,
+			"turnsNum": 5,
+			"thumbnail": "maps/mapThumb.jpg",
+			"picture": "maps/map.jpg",
+			"regions": []
 		}
-		
-	], 
-	"description": "test createGame function"
+	],
+	"description": "test uploadMap function"
 }
