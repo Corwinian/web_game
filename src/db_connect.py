@@ -79,7 +79,7 @@ class User(Base):
 		if self.gameId is None:
 			raise NotInGame()
 		if db.getGame(self.gameId).gameStatus != Game.gameStatusWaiting: 
-			raise BadGameStage()
+			raise BadGameState()
 		self.isReady = status
 		if status:
 			db.getGame(self.gameId).updateStage()
