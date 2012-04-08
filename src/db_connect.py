@@ -204,8 +204,8 @@ class Game(Base):
 		self.name = name
 		self.gameStatus = self.gameStatusWaiting
 		self.playersInGame = 0
+		self.turn= 0
 		self.Description = Description
-		print(self.name)
    
 	def checkGameName(self, name):
 		if not 0 < len(name) < 50:
