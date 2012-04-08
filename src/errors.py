@@ -32,6 +32,7 @@ errors = (
 	"tooManyPlayers",
 	"notInGame",
 	"badReadinessStatus",
+	"BadGameStage",
 )
 
 class RequestException(Exception):

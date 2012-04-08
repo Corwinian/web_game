@@ -78,6 +78,8 @@ class User(Base):
 	def setStatus(self, status):
 		if self.gameId is None:
 			raise NotInGame()
+		if db.getGame(self.gameId).gameStatus != Game.gameStatusWaiting: 
+			raise BadGameStage()
 		self.isReady = status
 		if status:
 			db.getGame(self.gameId).updateStage()
@@ -222,16 +224,16 @@ class Game(Base):
 			self.gameStatus = self.gameStatusEnd
 		
 	def getPlayers(self):
-		if self.gameStatus != gameStatusEnd:
+		if self.gameStatus != self.gameStatusEnd:
 			return db.query(User).filter_by(gameId= self.id).all()
 
 	def getMaxPlayersInGame(self):
 		return	db.query(Map).filter_by(id = self.mapId).one().playersNumber
 
 	def updateStage(self):
-		if self.gameStatus == gameStatusWaiting:
-			len(getPlayers()) == db.query(User).filter_by(gameId= self.id, isReady = True).all()
-			self.gameStatus = gameStatusProcessing
+		if self.gameStatus == self.gameStatusWaiting:
+			len(self.getPlayers()) == db.query(User).filter_by(gameId= self.id, isReady = True).all()
+			self.gameStatus = self.gameStatusProcessing
 
 
 	def getStage(self):
